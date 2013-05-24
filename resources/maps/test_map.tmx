@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="26" height="26" tilewidth="20" tileheight="20">
+ <tileset firstgid="1" name="textures" tilewidth="20" tileheight="20">
+  <image source="tmp_textures.jpg" width="40" height="40"/>
+ </tileset>
+ <layer name="background" width="26" height="26">
+  <data encoding="base64" compression="zlib">
+   eJztw0ENAAAMA6Grf9OTsQ8krJqqqj49AsoCpQ==
+  </data>
+ </layer>
+ <layer name="blocks" width="26" height="26">
+  <data encoding="base64" compression="zlib">
+   eJzdlUEKACAIBKP6/5u7L7StpgkNeCjEsZBq7S/6IaLzsj2/gecaQiBKXpUni2rP7X3uZhr3qzwWWJ3TOtszxajy7Ooi6GHgPFg8rF+Ph73dqsf6T3jx/luRvPZE9MX69HhUt9qnxaMyH3kWCtsCfQ==
+  </data>
+ </layer>
+</map>
