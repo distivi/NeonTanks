@@ -3,7 +3,7 @@
 import cocos
 import pyglet
 
-# TankBase - base class for all tansk using in the game
+# TankBase - base class for all tanks 
 
 class TankBase(cocos.sprite.Sprite):
     def __init__(self,power,position=(200,200)):
@@ -14,6 +14,7 @@ class TankBase(cocos.sprite.Sprite):
         self.isAnemy = True # is tank anemy
         self.path = "" #path to sprite
         self.power = power # tanks power level
+        self.direction = "needed to be defined" #!!!!!!!!!!!!!!!!!!!!
         #load texture in agreement with tank power
         if self.power == 0:
             self.path = "resources/tanks/0.png"
@@ -55,3 +56,13 @@ class TankBase(cocos.sprite.Sprite):
 
     def isAnemy(self): # return tank anemy type
         return self.isAnemy
+
+    def getPosition(self): #get tank position
+        return self.position
+
+    def getDirection(self): #get tank direction
+        return self.direction
+
+    def sefDirection(self,direction): #set tank direction
+        pass
+
