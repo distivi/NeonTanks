@@ -34,3 +34,11 @@ class TankBase(cocos.sprite.Sprite):
     def destroy(self): #remove object from layer
         pass
 
+    def getHP(self): # get tank health
+        return self.hp
+
+    def getPower(self): # get tank power
+        return self.power
+
+    def isAnemy(self): # return tank anemy type
+        return self.isAnemy
