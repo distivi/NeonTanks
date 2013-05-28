@@ -2,6 +2,27 @@
 <map version="1.0" orientation="orthogonal" width="26" height="26" tilewidth="20" tileheight="20">
  <tileset firstgid="1" name="textures" tilewidth="20" tileheight="20">
   <image source="tmp_textures.jpg" width="40" height="40"/>
+  <tile id="1">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="can move tank" value="True"/>
+    <property name="xp" value="1"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="can move tank" value="False"/>
+    <property name="xp" value="5"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="can move tank" value="False"/>
+    <property name="xp" value="0"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="background" width="26" height="26">
   <data encoding="base64" compression="zlib">
@@ -10,7 +31,7 @@
  </layer>
  <layer name="blocks" width="26" height="26">
   <data encoding="base64" compression="zlib">
-   eJzdlUEKACAIBKP6/5u7L7StpgkNeCjEsZBq7S/6IaLzsj2/gecaQiBKXpUni2rP7X3uZhr3qzwWWJ3TOtszxajy7Ooi6GHgPFg8rF+Ph73dqsf6T3jx/luRvPZE9MX69HhUt9qnxaMyH3kWCtsCfQ==
+   eJzdlUEKACAIBKP6/5u7L7StZgoNeCjEsZBq7S/6IaLzXnt+A881hECUvCrPK6o9t/e5m2ncr/JYYHWyPbieYlR5dnUR9DBwHiwe1q/Hw95u1WP9J7x4/61Isj0RfbE+PR7VrfZp8ajMJM8CFUsCfw==
   </data>
  </layer>
 </map>
