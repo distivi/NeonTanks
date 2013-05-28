@@ -3,6 +3,7 @@
 import sys
 import cocos
 from base_screen import BaseScreen
+from ui.battle_screen import BattleScreen
 
 
 class MenuScreen(BaseScreen):	
@@ -30,8 +31,9 @@ class MenuScreen(BaseScreen):
 		self.add(menu)
 
 
-	def on_new_game(self):
-		print "new game"
+	def on_new_game(self):			
+		battleScreen = cocos.scene.Scene(BattleScreen())
+		cocos.director.director.push(battleScreen)
 
 	def on_quit(self):
 		print "exit from game"
