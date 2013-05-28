@@ -9,6 +9,7 @@ class MenuScreen(BaseScreen):
 	def __init__(self):
 		super(MenuScreen, self).__init__()		
 		self.create_layer()
+		self.create_menu()
 		
 
 	def create_layer(self):		
@@ -19,7 +20,19 @@ class MenuScreen(BaseScreen):
 		label.position = self.win_width / 2, self.win_height - 20
 		self.add(label)
 
-	
+	def create_menu(self):
+		menu_list = []
+		menu_list.append(cocos.menu.MenuItem('New Game',self.on_new_game))		
+		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit ))
+		menu = cocos.menu.Menu()
+		menu.create_menu(menu_list);
+		menu.position = 0, 0
+		self.add(menu)
 
-		
-				
+
+	def on_new_game(self):
+		print "new game"
+
+	def on_quit(self):
+		print "exit from game"
+
