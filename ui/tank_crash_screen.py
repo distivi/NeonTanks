@@ -7,7 +7,6 @@ class TankCrashScreen(BaseScreen):
 		super(TankCrashScreen, self).__init__()		
 		self.create_layer()		
 		self.create_tank()
-		#self.tank = TankBase(0)
 		self.schedule(self.update)
 
 	def create_layer(self):		
@@ -19,7 +18,8 @@ class TankCrashScreen(BaseScreen):
 		self.add(label)
 
 	def create_tank(self):
-		self.add(TankBase(0))
+		self.tank = TankBase(0)
+		self.add(self.tank)
 
 	def update(self,obj):
-		pass
+		self.tank.move()
