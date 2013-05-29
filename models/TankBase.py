@@ -10,7 +10,7 @@ class TankBase(cocos.sprite.Sprite):
     def __init__(self,power,position=(200,200)):
         super(TankBase,self).__init__("resources/tanks/0.png",position)
         self.x,self.y = position #base object position
-        self.speed = 0.2 #tank speed
+        self.speed = 0.02 #tank speed
         self.hp = 100 # tank's health
         self.isAnemy = True # is tank anemy
         self.path = "" #path to sprite
@@ -28,15 +28,15 @@ class TankBase(cocos.sprite.Sprite):
 
         super(TankBase,self).__init__(self.path,position=(self.x,self.y))
 
-        self.schedule(self.update)
+        #self.schedule(self.update)
         self.schedule(self.shoot)
 
     def update(self,obj): #update object
-        self.move()
+        pass
 
     def move(self): #move object
         direction = random.randint(0,3) #define move direction
-        maxMoveDistance = random.randint(5,10) #define on wich distance tank will move in one direction
+        maxMoveDistance = random.randint(50,100) #define on wich distance tank will move in one direction
         print "Move meth"
         print direction
         print maxMoveDistance
