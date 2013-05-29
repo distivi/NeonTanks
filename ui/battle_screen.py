@@ -37,17 +37,19 @@ class BattleScreen(BaseScreen):
 		block_layer = resources_from_tmx['blocks']
 		scroller.add(block_layer)				
 
+		# testing code
 		print block_layer
 
 		cell00 = block_layer.get_cell(0,0)
 		cell25 = block_layer.get_cell(25,25)
 		cell30 = block_layer.get_cell(30,30)
 
+		cell00.position = 12, 12
+
 		print cell00
 		print cell25
 		print cell30
-
-
+		# end testing code
 
 		self.add(scroller)
 

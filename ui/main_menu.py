@@ -23,18 +23,30 @@ class MenuScreen(BaseScreen):
 
 	def create_menu(self):
 		menu_list = []
-		menu_list.append(cocos.menu.MenuItem('New Game',self.on_new_game))		
+		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
+		menu_list.append(cocos.menu.MenuItem('New Game',self.on_new_game))
+		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
+		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
 		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit ))
 		menu = cocos.menu.Menu()
 		menu.create_menu(menu_list);
 		menu.position = 0, 0
 		self.add(menu)
 
+	def on_continue(self):
+		print "on_continue"
 
 	def on_new_game(self):			
 		battleScreen = cocos.scene.Scene(BattleScreen())
 		cocos.director.director.push(battleScreen)
 
+	def on_load(self):
+		print "on_load"
+		
+	def on_save(self):
+		print "on_save"		
+
 	def on_quit(self):
-		print "exit from game"
+		exit()
+
 
