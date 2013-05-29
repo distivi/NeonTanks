@@ -34,7 +34,7 @@ class Map(cocos.layer.ScrollingManager):
 		self.block_x = 0
 		self.block_y = 0
 
-		self.schedule_interval(self.update, 1)
+		# self.schedule_interval(self.update, 1)
 		
 		
 
