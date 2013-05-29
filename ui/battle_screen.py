@@ -4,6 +4,7 @@ import cocos
 from base_screen import BaseScreen
 from models.static_block import *
 from models.brick_block import *
+from models.map import Map
 
 
 class BattleScreen(BaseScreen):	
@@ -23,35 +24,8 @@ class BattleScreen(BaseScreen):
 		self.add(label)
 	
 	def create_map(self):
-		scroller = cocos.layer.ScrollingManager()
-		resources_from_tmx = cocos.tiles.load('resources/maps/test_map.tmx')
-
-		print resources_from_tmx
-		print resources_from_tmx.contents
-		print resources_from_tmx.requires
-
-
-		bg_layer = resources_from_tmx['background']
-		scroller.add(bg_layer)
-
-		block_layer = resources_from_tmx['blocks']
-		scroller.add(block_layer)				
-
-		# testing code
-		print block_layer
-
-		cell00 = block_layer.get_cell(0,0)
-		cell25 = block_layer.get_cell(25,25)
-		cell30 = block_layer.get_cell(30,30)
-
-		cell00.position = 12, 12
-
-		print cell00
-		print cell25
-		print cell30
-		# end testing code
-
-		self.add(scroller)
+		battle_map = Map('resources/maps/test_map.tmx')		
+		self.add(battle_map)
 
 	def info_enemeis(self):
 		easyEnemy = 6	#will be count

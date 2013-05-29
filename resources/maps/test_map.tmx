@@ -5,21 +5,18 @@
   <tile id="1">
    <properties>
     <property name="can move bullet" value="False"/>
-    <property name="can move tank" value="True"/>
     <property name="xp" value="1"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
     <property name="can move bullet" value="False"/>
-    <property name="can move tank" value="False"/>
     <property name="xp" value="5"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
-    <property name="can move bullet" value="False"/>
-    <property name="can move tank" value="False"/>
+    <property name="can move bullet" value="True"/>
     <property name="xp" value="0"/>
    </properties>
   </tile>
