@@ -11,6 +11,7 @@ UP = 65362
 RIGHT = 65363
 DOWN = 65364
 
+
 class HandlerKey(BaseScreen):
     is_event_handler = True
     def __init__(self):
@@ -26,6 +27,7 @@ class HandlerKey(BaseScreen):
         
     def on_key_release(self, key, modifiers):
        self.chars_pressed.remove(key)
+       pass
  
-cocos.director.director.init(resizable=True, caption="Handler key")
-cocos.director.director.run(cocos.scene.Scene( HandlerKey() ) )
+#cocos.director.director.init(resizable=True, caption="Handler key")
+#cocos.director.director.run(cocos.scene.Scene( HandlerKey() ) )

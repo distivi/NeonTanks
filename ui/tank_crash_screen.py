@@ -1,8 +1,16 @@
 import cocos
 from base_screen import BaseScreen
 from models.TankBase import TankBase
+from handler_key import HandlerKey
 
-class TankCrashScreen(BaseScreen):	
+ESC = 65307
+LEFT = 65361
+UP = 65362
+RIGHT = 65363
+DOWN = 65364
+
+class TankCrashScreen(HandlerKey):
+	#is_event_handler = True	
 	def __init__(self):
 		super(TankCrashScreen, self).__init__()		
 		self.create_layer()		
@@ -22,4 +30,13 @@ class TankCrashScreen(BaseScreen):
 		self.add(self.tank)
 
 	def update(self,obj):
-		self.tank.move()
+		#keys = HandlerKey()
+		if LEFT in self.chars_pressed:
+			self.tank.move(3)
+		elif RIGHT in self.chars_pressed:
+			self.tank.move(2)
+		elif UP in self.chars_pressed:
+			self.tank.move(0)
+		elif DOWN in self.chars_pressed:
+			self.tank.move(1)
+		#self.tank.move()
