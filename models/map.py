@@ -21,7 +21,8 @@ class Map(cocos.layer.ScrollingManager):
 		for rows in self.block_layer.cells:
 			for cell in rows:
 				tile = cell.tile				
-				if tile:		
+				if tile:
+					print tile		
 					self.blocks.append(cell)										
 					#print tile.properties
 
