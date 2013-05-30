@@ -26,7 +26,7 @@ class HandlerKey(BaseScreen):
        self.text.element.text = pyglet.window.key.symbol_string(key)
         
     def on_key_release(self, key, modifiers):
-       #self.chars_pressed.remove(key)
+       self.chars_pressed.remove(key)
        pass
  
 #cocos.director.director.init(resizable=True, caption="Handler key")
