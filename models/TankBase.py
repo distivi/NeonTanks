@@ -83,3 +83,8 @@ class TankBase(cocos.sprite.Sprite):
     def sefDirection(self,direction): #set tank direction
         pass
 
+    def getXml(self):
+        root = ET.Element('tank')		
+        root.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}
+        xmlData = ET.tostring(root, encoding="utf-8")
+        return xmlData
