@@ -2,7 +2,6 @@
 
 import cocos
 from base_screen import BaseScreen
-from main_menu import *
 from models.static_block import *
 from models.brick_block import *
 from models.map import Map
@@ -91,6 +90,5 @@ class BattleScreen(BaseScreen):
 		menu.position = -self.win_width / 2.5, -self.win_height / 2.5
 		self.add(menu)
 
-	def go_to_main_menu(self):
-		menuScreen = cocos.scene.Scene(MenuScreen())
-		cocos.director.director.pop(menuScreen)
+	def go_to_main_menu(self):		
+		cocos.director.director.pop()
