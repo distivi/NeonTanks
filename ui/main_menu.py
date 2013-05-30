@@ -29,7 +29,7 @@ class MenuScreen(BaseScreen):
 		menu_list.append(cocos.menu.MenuItem('Tank crash test', self.on_crashTest ))
 		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
 		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
-		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit ))
+		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
 		menu = cocos.menu.Menu()
 		menu.create_menu(menu_list);
 		menu.position = 0, 0
