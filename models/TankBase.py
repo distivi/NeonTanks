@@ -10,7 +10,7 @@ class TankBase(cocos.sprite.Sprite):
     def __init__(self,power,position=(200,200)):
         super(TankBase,self).__init__("resources/tanks/tank_player.png",position)
         self.x,self.y = position #base object position
-        self.speed = 0.4 #tank speed
+        #self.speed = 1 #tank speed
         self.hp = 100 # tank's health
         self.isAnemy = True # is tank anemy
         self.path = "" #path to sprite
@@ -27,6 +27,8 @@ class TankBase(cocos.sprite.Sprite):
             self.path = "resources/tanks/tank_player.png"
 
         super(TankBase,self).__init__(self.path,position=(self.x,self.y))
+
+        self.defineSpeed()
 
         self.schedule(self.update)
         self.schedule_interval(self.shoot,2) # shoots every 2 seconds
@@ -88,3 +90,11 @@ class TankBase(cocos.sprite.Sprite):
         root.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}
         xmlData = ET.tostring(root, encoding="utf-8")
         return xmlData
+
+    def defineSpeed(self):
+        if self.power == 0: #fast tank
+            self.speed = 1
+        elif self.power == 1: #standart tank
+            self.speed = 0.5
+        else: # heavy tank
+            self.speed = 0.1
