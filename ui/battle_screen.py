@@ -6,7 +6,6 @@ from models.static_block import *
 from models.brick_block import *
 from models.map import Map
 
-
 class BattleScreen(BaseScreen):	
 	def __init__(self):
 		super(BattleScreen, self).__init__()		
