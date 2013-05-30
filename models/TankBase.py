@@ -36,19 +36,19 @@ class TankBase(cocos.sprite.Sprite):
 
     def move(self,direction=1): #move object
         if direction == 0: #move up
-            self.rotation = 1*90;
+            self.rotation = 180;
             pos = self.x,self.y+self.speed
             self.position = pos
         elif direction == 1: #move down
-            self.rotation = 1*90;
+            self.rotation = 0;
             pos = self.x,self.y-self.speed
             self.position = pos
         elif direction == 2: #move right
-            self.rotation = 1*90;
+            self.rotation = -90;
             pos = self.x+self.speed,self.y
             self.position = pos
         elif direction == 3: # move left
-            self.rotation = 1*90;
+            self.rotation = 90;
             pos = self.x-self.speed,self.y
             self.position = pos
 
