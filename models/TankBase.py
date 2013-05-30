@@ -8,7 +8,7 @@ import random
 
 class TankBase(cocos.sprite.Sprite):
     def __init__(self,power,position=(200,200)):
-        super(TankBase,self).__init__("resources/tanks/0.png",position)
+        super(TankBase,self).__init__("resources/tanks/tank_player.png",position)
         self.x,self.y = position #base object position
         self.speed = 0.4 #tank speed
         self.hp = 100 # tank's health
@@ -18,13 +18,13 @@ class TankBase(cocos.sprite.Sprite):
         self.direction = "needed to be defined" #!!!!!!!!!!!!!!!!!!!!
         #load texture in agreement with tank power
         if self.power == 0:
-            self.path = "resources/tanks/0.png"
+            self.path = "resources/tanks/tank_standart.png"
         elif self.power == 1:
-            self.path = "resources/tanks/1.png"
+            self.path = "resources/tanks/tank_fast.png"
         elif self.power == 2:
-            self.path = "resources/tanks/2.png"
+            self.path = "resources/tanks/tank_heavy.png"
         elif self.power == 3:
-            self.path = "resources/tanks/3.png"
+            self.path = "resources/tanks/tank_player.png"
 
         super(TankBase,self).__init__(self.path,position=(self.x,self.y))
 
@@ -36,19 +36,19 @@ class TankBase(cocos.sprite.Sprite):
 
     def move(self,direction=1): #move object
         if direction == 0: #move up
-            self.rotation = 180;
+            self.rotation = 0;
             pos = self.x,self.y+self.speed
             self.position = pos
         elif direction == 1: #move down
-            self.rotation = 0;
+            self.rotation = 180;
             pos = self.x,self.y-self.speed
             self.position = pos
         elif direction == 2: #move right
-            self.rotation = -90;
+            self.rotation = 90;
             pos = self.x+self.speed,self.y
             self.position = pos
         elif direction == 3: # move left
-            self.rotation = 90;
+            self.rotation = -90;
             pos = self.x-self.speed,self.y
             self.position = pos
 
