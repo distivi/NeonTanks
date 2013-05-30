@@ -6,6 +6,10 @@ import pyglet
 from base_screen import BaseScreen
 
 ESC = 65307
+LEFT = 65361
+UP = 65362
+RIGHT = 65363
+DOWN = 65364
 
 class HandlerKey(BaseScreen):
     is_event_handler = True
