@@ -14,6 +14,7 @@ class BattleScreen(BaseScreen):
 		self.info_enemeis()
 		self.info_panzer()
 		self.button_menu()
+		
 
 	def create_layer(self):		
 		label = cocos.text.Label("Battle Screen",
@@ -91,3 +92,4 @@ class BattleScreen(BaseScreen):
 
 	def go_to_main_menu(self):		
 		cocos.director.director.pop()
+

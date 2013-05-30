@@ -1,5 +1,5 @@
 import cocos
-
+from models.static_block import *
 
 
 class Map(cocos.layer.ScrollingManager):	
@@ -20,15 +20,15 @@ class Map(cocos.layer.ScrollingManager):
 		print self.block_layer
 		for rows in self.block_layer.cells:
 			for cell in rows:
-				tile = cell.tile				
+				tile = cell.tile
 				if tile:
-					print tile		
-					self.blocks.append(cell)										
-					#print tile.properties
+					#print tile.properties		
+					tempBlock = BaseStaticBlock(cell)
+					self.blocks.append(tempBlock)							
 
 		#cell00 = self.block_layer.get_cell(0,0)
 		
-		self.schedule_interval(self.testHidingAllBlocksFromMap, 0.01)
+		#self.schedule_interval(self.testHidingAllBlocksFromMap, 0.01)
 		
 		
 
