@@ -1,6 +1,6 @@
 import cocos
 
-class BaseStaticBlock():	
+class BaseStaticBlock(object):	
 	def __init__(self,cell):
 		super(BaseStaticBlock, self).__init__()
 		print "create BaseStaticBlock"
