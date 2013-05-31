@@ -9,6 +9,7 @@ import random
 class TankBase(cocos.sprite.Sprite):
     def __init__(self,power,position=(200,200)):
         super(TankBase,self).__init__("resources/tanks/tank_player.png",position)
+        self.observers = [] # kepp observers
         self.x,self.y = position #base object position
         #self.speed = 1 #tank speed
         self.hp = 100 # tank's health
@@ -30,8 +31,17 @@ class TankBase(cocos.sprite.Sprite):
 
         self.defineSpeed()
 
-        self.schedule(self.update)
+        #self.schedule(self.update)
         self.schedule_interval(self.shoot,2) # shoots every 2 seconds
+
+    # define observe system
+
+    def attach(self,observer): #attach observer
+        self.observers.append(observer)
+
+    def _update_observers(self): #update observer
+        for observer in self.observers:
+            observer()
 
     def update(self,obj): #update object
         pass
@@ -57,6 +67,7 @@ class TankBase(cocos.sprite.Sprite):
 
     def shoot(self,obj): #tank shoots
         print "Shoot"
+        self._update_observers()
 
     def damage(self,damage_point): # set tank damage
         self.hp -= damage_point
