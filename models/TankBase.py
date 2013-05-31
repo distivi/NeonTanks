@@ -88,8 +88,7 @@ class TankBase(cocos.sprite.Sprite):
     def getXml(self):
         root = ET.Element('tank')		
         root.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}
-        xmlData = ET.tostring(root, encoding="utf-8")
-        return xmlData
+        return root
 
     def defineSpeed(self):
         if self.power == 0: #fast tank
