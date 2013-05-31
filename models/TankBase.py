@@ -22,7 +22,7 @@ class TankBase(cocos.sprite.Sprite):
         #load texture in agreement with tank power
         self.bulletStartPosition = (0,0) #keep bullet current position
         if self.power == 0:
-            self.path = "resources/tanks/my_tank.png"
+            self.path = "resources/tanks/tank_standart.png"
         elif self.power == 1:
             self.path = "resources/tanks/tank_fast.png"
         elif self.power == 2:
