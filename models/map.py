@@ -1,6 +1,6 @@
 import cocos
 from models.static_block import *
-from models.Bullet import *
+from models.bullet import *
 
 
 class Map(cocos.layer.Layer):	
