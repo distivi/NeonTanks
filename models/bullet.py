@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Bullet class
+# Bullet class new
 
 import cocos
 import pyglet
