@@ -3,6 +3,8 @@
 import cocos
 import pyglet
 import random
+import xml.etree.ElementTree as ET
+from models.bullet import Bullet
 
 # TankBase - base class for all tanks 
 
@@ -18,6 +20,7 @@ class TankBase(cocos.sprite.Sprite):
         self.power = power # tanks power level
         self.direction = "needed to be defined" #!!!!!!!!!!!!!!!!!!!!
         #load texture in agreement with tank power
+        self.bulletStartPosition = (0,0) #keep bullet current position
         if self.power == 0:
             self.path = "resources/tanks/tank_standart.png"
         elif self.power == 1:
@@ -47,27 +50,41 @@ class TankBase(cocos.sprite.Sprite):
         pass
 
     def move(self,direction=1): #move object
+        self.direction = direction
+        tank_length = 10
         if direction == 0: #move up
             self.rotation = 0;
             pos = self.x,self.y+self.speed
             self.position = pos
+            self.bulletStartPosition = ( (pos[0]),(pos[1]+tank_length) )
         elif direction == 1: #move down
             self.rotation = 180;
             pos = self.x,self.y-self.speed
             self.position = pos
+            self.bulletStartPosition = ( (pos[0]),(pos[1]-tank_length) )
         elif direction == 2: #move right
             self.rotation = 90;
             pos = self.x+self.speed,self.y
             self.position = pos
+            self.bulletStartPosition = ( (pos[0]+tank_length),(pos[1]) )
         elif direction == 3: # move left
             self.rotation = -90;
             pos = self.x-self.speed,self.y
             self.position = pos
+            self.bulletStartPosition = ( (pos[0]-tank_length),(pos[1]) )
 
 
     def shoot(self,obj): #tank shoots
-        print "Shoot"
+        if self.direction == 0:1
+        bullet = Bullet("resources/bullets/0.png",self.bulletStartPosition,self.direction)
+        #print 'Shoot start posotion=',self.position
+        #bullet.move(self.getDirection())
+        #self.add(bullet)
+        for observer in self.observers:
+            if hasattr(observer,'tankShoot'):
+                observer.tankShoot(bullet)
         self._update_observers()
+        print 'Shoot'
 
     def damage(self,damage_point): # set tank damage
         self.hp -= damage_point
