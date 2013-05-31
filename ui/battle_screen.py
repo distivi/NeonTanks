@@ -5,15 +5,24 @@ from base_screen import BaseScreen
 from models.static_block import *
 from models.brick_block import *
 from models.map import Map
+from managers.game_manager import GameManager
+from handler_key import *
 
-class BattleScreen(BaseScreen):	
+
+class BattleScreen(HandlerKey):	
 	def __init__(self):
 		super(BattleScreen, self).__init__()		
-		self.create_layer()		
-		self.create_map()
+		self.create_layer()						
 		self.info_enemeis()
 		self.info_panzer()
 		self.button_menu()
+
+		self.init_game()
+		self.schedule(self.update)
+
+	def update(self, dt):
+		self.update_tank_position()
+		self.game_manager.update()	
 		
 
 	def create_layer(self):		
@@ -23,10 +32,30 @@ class BattleScreen(BaseScreen):
 			anchor_y = 'center')		
 		label.position = self.win_width / 2, self.win_height - 20
 		self.add(label)
-	
-	def create_map(self):
-		battle_map = Map('resources/maps/test_map.tmx')		
-		self.add(battle_map)
+
+	def init_game(self):
+		self.game_manager = GameManager(1)
+		self.game_manager.map.position = self.win_width / 2 - 260, self.win_height / 2 - 260
+		self.add(self.game_manager.map)
+
+	def update_tank_position(self):	
+		tank_direction = -1	
+		if LEFT in self.chars_pressed:			
+			tank_direction = 3
+
+		elif RIGHT in self.chars_pressed:			
+			tank_direction = 2
+
+		elif UP in self.chars_pressed:			
+			tank_direction = 0
+
+		elif DOWN in self.chars_pressed:			
+			tank_direction = 1			
+
+		if tank_direction != -1:
+			self.game_manager.player_tank.move(tank_direction)
+
+		
 
 	def info_enemeis(self):
 		easyEnemy = 6	#will be count
