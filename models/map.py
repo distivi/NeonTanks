@@ -1,6 +1,7 @@
 import cocos
 from models.static_block import *
 from models.bullet import *
+from xml.etree import ElementTree
 
 
 class Map(cocos.layer.Layer):	
@@ -8,13 +9,19 @@ class Map(cocos.layer.Layer):
 		super(Map, self).__init__()		
 		resources_from_tmx = cocos.tiles.load(map_path)
 
-		bg_layer = resources_from_tmx['background']
+		bg_layer = resources_from_tmx['bg']		
 		bg_layer.set_view(0, 0, 520, 520)
 		self.add(bg_layer)
 
-		self.block_layer = resources_from_tmx['blocks']
+		self.block_layer = resources_from_tmx['test_map']
 		self.block_layer.set_view(0, 0, 520, 520)
 		self.add(self.block_layer)
+
+		self.spawn_points = []
+		self.parse_object_layer(map_path)
+
+
+
 
 		self.blocks = []
 
@@ -29,6 +36,14 @@ class Map(cocos.layer.Layer):
 					self.blocks.append(tempBlock)
 			
 		#self.schedule_interval(self.testHidingAllBlocksFromMap, 0.01)
+
+	def parse_object_layer(self,file_path):
+		etree = ElementTree.parse(file_path).getroot()
+		for node in etree.findall('objectgroup'):
+			for spawn_object in node.findall('object'):
+				self.spawn_points.append(SpawnPoint(spawn_object))
+
+            #self.objectgroups.append(TiledObjectGroup(self, node))
 	
 	def testHidingAllBlocksFromMap(self, dt):
 		# test method
@@ -72,6 +87,23 @@ class Map(cocos.layer.Layer):
 			bullet_rect.y + bullet_rect.height)
 		print cells
 		# remove blocks
+
+
+class SpawnPoint(object):	
+	def __init__(self, node):
+		super(SpawnPoint, self).__init__()
+
+		print node
+
+		self.name = node.get('name')
+		self.x = node.get('x')
+		self.y = node.get('y')
+		self.position = self.x,self.y
+
+		print self.name,"+++",self.position
+
+
+		
 
 
 

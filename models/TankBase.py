@@ -84,7 +84,7 @@ class TankBase(cocos.sprite.Sprite):
             if hasattr(observer,'tankShoot'):
                 observer.tankShoot(bullet)
         self._update_observers()
-        print 'Shoot'
+        #print 'Shoot'
 
     def damage(self,damage_point): # set tank damage
         self.hp -= damage_point

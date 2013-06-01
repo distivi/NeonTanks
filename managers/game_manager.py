@@ -12,7 +12,7 @@ class GameManager(object):
 	def __init__(self,level):
 		super(GameManager, self).__init__()	
 		self.level = level	
-		self.map = Map('resources/maps/test_map.tmx')
+		self.map = Map('resources/maps/game_map.tmx')
 		self.createTanks()
 		self.createPlayerTank()
 		self.add_player_tank_to_map()
@@ -62,6 +62,9 @@ class GameManager(object):
 
 	def count_of_heavy_tanks_for_level(self,level):
 		return level * 3
+
+	def max_count_of_tanks_on_map(self,level):
+		return 5
 
 	def add_tank_to_map(self):
 		tank = self.tanks[0]
