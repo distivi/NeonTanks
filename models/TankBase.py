@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import copy
 import cocos
 import pyglet
-import random
+from random import randint
 import xml.etree.ElementTree as ET
 from models.bullet import Bullet
 
@@ -13,14 +14,15 @@ class TankBase(cocos.sprite.Sprite):
         super(TankBase,self).__init__("resources/tanks/tank_player.png",position)
         self.observers = [] # kepp observers
         self.x,self.y = position #base object position
-        #self.speed = 1 #tank speed
+        self.isMoving = False
         self.hp = 100 # tank's health
         self.isAnemy = True # is tank anemy
         self.path = "" #path to sprite
         self.power = power # tanks power level
-        self.direction = "needed to be defined" #!!!!!!!!!!!!!!!!!!!!
+        self.direction = 0        
+        self.setDirection(0)        
         #load texture in agreement with tank power
-        self.bulletStartPosition = (0,0) #keep bullet current position
+
         if self.power == 0:
             self.path = "resources/tanks/tank_standart.png"
         elif self.power == 1:
@@ -28,63 +30,83 @@ class TankBase(cocos.sprite.Sprite):
         elif self.power == 2:
             self.path = "resources/tanks/tank_heavy.png"
         elif self.power == 3:
+            self.direction = -1
             self.path = "resources/tanks/tank_player.png"
 
         super(TankBase,self).__init__(self.path,position=(self.x,self.y))
 
         self.defineSpeed()
 
-        #self.schedule(self.update)
-        self.schedule_interval(self.shoot,2) # shoots every 2 seconds
-
-    # define observe system
+        if self.power != 3:
+            # for enemy tanks
+            self.schedule_interval(self.AI_movement,3) #change direction every 1.5 sec
+            self.schedule_interval(self.shoot,2) # shoots every 2 seconds
 
     def attach(self,observer): #attach observer
         self.observers.append(observer)
 
-    def _update_observers(self): #update observer
-        for observer in self.observers:
-            observer()
+    def AI_movement(self,dt):
+        randDirection = randint(0,3)        
+        self.setDirection(randDirection)
 
-    def update(self,obj): #update object
-        pass
+    def user_select_direction(self, direction):
+        self.setDirection(direction)
 
-    def move(self,direction=1): #move object
-        self.direction = direction
+    def move(self): #move object        
         tank_length = 10
-        if direction == 0: #move up
-            self.rotation = 0;
-            pos = self.x,self.y+self.speed
-            self.position = pos
-            self.bulletStartPosition = ( (pos[0]),(pos[1]+tank_length) )
-        elif direction == 1: #move down
-            self.rotation = 180;
-            pos = self.x,self.y-self.speed
-            self.position = pos
-            self.bulletStartPosition = ( (pos[0]),(pos[1]-tank_length) )
-        elif direction == 2: #move right
-            self.rotation = 90;
-            pos = self.x+self.speed,self.y
-            self.position = pos
-            self.bulletStartPosition = ( (pos[0]+tank_length),(pos[1]) )
-        elif direction == 3: # move left
-            self.rotation = -90;
-            pos = self.x-self.speed,self.y
-            self.position = pos
-            self.bulletStartPosition = ( (pos[0]-tank_length),(pos[1]) )
+        distance = 20
+        pos = 0,0
+        angle = 0
 
+        if self.direction == -1: # stand
+            return
+        elif self.direction == 0: #move up
+            angle = 0 
+            pos = 0,distance
 
-    def shoot(self,obj): #tank shoots
-        if self.direction == 0:1
-        bullet = Bullet("resources/bullets/0.png",self.bulletStartPosition,self.direction)
-        #print 'Shoot start posotion=',self.position
-        #bullet.move(self.getDirection())
-        #self.add(bullet)
+        elif self.direction == 1: #move down
+            angle = 180
+            pos = 0,-distance
+
+        elif self.direction == 2: #move right
+            angle = 90
+            pos = distance,0 
+            
+        elif self.direction == 3: # move left
+            angle = 270
+            pos = -distance,0            
+
+        startMoving = cocos.actions.CallFunc(self.setMoving, True)
+        rotate_duration = 0 if angle == self.rotation else 0.2
+        rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
+        moveTank = cocos.actions.MoveBy(pos, duration = self.speed)
+        endMoving = cocos.actions.CallFunc(self.setMoving, False)
+
+        self.do(startMoving + rotateTank + moveTank + endMoving)
+
+    def shoot(self,obj = 1): #tank shoots                
+        bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction)        
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):
                 observer.tankShoot(bullet)
-        self._update_observers()
-        #print 'Shoot'
+
+
+    def get_next_step_rect(self):
+        rect = self.get_rect()
+        distance = 20
+
+        if self.direction == -1: # stand
+            return rect
+        elif self.direction == 0: #move up
+            rect.y += distance
+        elif self.direction == 1: #move down
+            rect.y -= distance
+        elif self.direction == 2: #move right
+            rect.x += distance            
+        elif self.direction == 3: # move left
+            rect.x -= distance
+        return rect
+
 
     def damage(self,damage_point): # set tank damage
         self.hp -= damage_point
@@ -93,7 +115,11 @@ class TankBase(cocos.sprite.Sprite):
         pass
 
     def destroy(self): #remove object from layer
-        pass
+        self.kill()
+        for observer in self.observers:
+            if hasattr(observer,'tankDestroyed'):
+                observer.tankDestroyed(self)
+ 
 
     def getHP(self): # get tank health
         return self.hp
@@ -104,14 +130,22 @@ class TankBase(cocos.sprite.Sprite):
     def isAnemy(self): # return tank anemy type
         return self.isAnemy
 
+    def setPosition(self,position):        
+        self.position = position 
+
     def getPosition(self): #get tank position
         return self.position
 
     def getDirection(self): #get tank direction
         return self.direction
 
-    def sefDirection(self,direction): #set tank direction
-        pass
+    def setDirection(self,direction): #set tank direction        
+        if direction != -1:
+            self.bullet_direction = self.direction
+        self.direction = direction       
+        
+    def setMoving(self,isMoving = False):        
+        self.isMoving = isMoving            
 
     def getXml(self):
         root = ET.Element('tank')		
@@ -120,8 +154,8 @@ class TankBase(cocos.sprite.Sprite):
 
     def defineSpeed(self):
         if self.power == 0: #fast tank
-            self.speed = 1
-        elif self.power == 1: #standart tank
-            self.speed = 0.5
-        else: # heavy tank
             self.speed = 0.1
+        elif self.power == 1: #standart tank
+            self.speed = 0.2
+        else: # heavy tank
+            self.speed = 0.2

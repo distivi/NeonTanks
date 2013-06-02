@@ -9,35 +9,44 @@ class Bullet(cocos.sprite.Sprite):
     def __init__(self,path,position,direction):
         super(Bullet,self).__init__(path,position)
         self.x,self.y = position
-        self.speed = 1
+        self.speed = 0.05
+        self.isMoving = False
         self.direction = direction
-        self.schedule(self.update)
+        self.init_real_position()
+
+    def init_real_position(self):
+        distance = 20
+
+        self.move_posistion = 0,0
+
+        if self.direction == 0: #move up            
+            self.move_posistion = 0,distance
+
+        elif self.direction == 1: #move down            
+            self.move_posistion = 0,-distance
+
+        elif self.direction == 2: #move right            
+            self.move_posistion = distance,0
+            
+        elif self.direction == 3: # move left            
+            self.move_posistion = -distance,0
+
+        self.x += self.move_posistion[0]
+        self.y += self.move_posistion[1]
+
 
     def move(self):
-        #print "bullet curr position=",self.x,self.y
-        if self.direction == 0: #move up
-            self.rotation = 0;
-            pos = self.x,self.y+self.speed
-            self.position = pos
-        elif self.direction == 1: #move down
-            self.rotation = 180;
-            pos = self.x,self.y-self.speed
-            self.position = pos
-        elif self.direction == 2: #move right
-            self.rotation = 90;
-            pos = self.x+self.speed,self.y
-            self.position = pos
-        elif self.direction == 3: # move left
-            self.rotation = -90;
-            pos = self.x-self.speed,self.y
-            self.position = pos
- 
-    def update(self,obj):
-        pass
-        #self.move()
+        self.isMoving = True
+        moveAction = cocos.actions.MoveBy(self.move_posistion, duration = self.speed)
+        repeatMoving = cocos.actions.Repeat(moveAction)  
 
+        self.do(repeatMoving)
+ 
+    
     def getPosition(self):
         return (self.x,self.y)
 
     def destroy(self): #destroy object
-        pass
+        self.kill()
+        
+        

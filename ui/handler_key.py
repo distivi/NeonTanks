@@ -10,6 +10,7 @@ LEFT = 65361
 UP = 65362
 RIGHT = 65363
 DOWN = 65364
+SPACE = 32
 
 
 class HandlerKey(BaseScreen):
@@ -22,7 +23,7 @@ class HandlerKey(BaseScreen):
         self.add(self.text)
 
     def on_key_press(self, key, modifiers):
-       self.chars_pressed.add(key)
+       self.chars_pressed.add(key)       
        self.text.element.text = pyglet.window.key.symbol_string(key)
         
     def on_key_release(self, key, modifiers):

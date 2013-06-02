@@ -17,12 +17,14 @@ class BattleScreen(HandlerKey):
 		self.info_panzer()
 		self.button_menu()
 
-		self.init_game()
-		self.schedule(self.update)
+		self.init_game()		
+		self.schedule_interval(self.update, 0.01) 
+
 
 	def update(self, dt):
 		self.update_tank_position()
-		self.game_manager.update()	
+		self.game_manager.update()
+		self.game_manager.updateSpawnTanks()
 		
 
 	def create_layer(self):		
@@ -39,23 +41,29 @@ class BattleScreen(HandlerKey):
 		self.add(self.game_manager.map)
 
 	def update_tank_position(self):	
-		tank_direction = -1	
-		if LEFT in self.chars_pressed:			
-			tank_direction = 3
+		if hasattr(self.game_manager,'player_tank'):
+			tank_direction = -1	
+			if LEFT in self.chars_pressed:			
+				tank_direction = 3
 
-		elif RIGHT in self.chars_pressed:			
-			tank_direction = 2
+			elif RIGHT in self.chars_pressed:			
+				tank_direction = 2
 
-		elif UP in self.chars_pressed:			
-			tank_direction = 0
+			elif UP in self.chars_pressed:			
+				tank_direction = 0
 
-		elif DOWN in self.chars_pressed:			
-			tank_direction = 1			
+			elif DOWN in self.chars_pressed:			
+				tank_direction = 1
 
-		if tank_direction != -1:
-			self.game_manager.player_tank.move(tank_direction)
+			self.game_manager.player_tank.user_select_direction(tank_direction)
+			
 
-		
+	def on_key_press(self, key, modifiers):
+		super(BattleScreen,self).on_key_press(key,modifiers)
+		if SPACE == key: 				
+			self.game_manager.player_tank.shoot()
+
+
 
 	def info_enemeis(self):
 		easyEnemy = 6	#will be count

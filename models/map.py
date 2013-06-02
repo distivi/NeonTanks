@@ -17,33 +17,34 @@ class Map(cocos.layer.Layer):
 		self.block_layer.set_view(0, 0, 520, 520)
 		self.add(self.block_layer)
 
-		self.spawn_points = []
+		self.blocks = []
+		self.parse_blocks_layer()
+
+		self.enemy_spawn_points = []
+		self.player_spawn_points = []
 		self.parse_object_layer(map_path)
 
-
-
-
-		self.blocks = []
-
-		# testing code
-		print self.block_layer
-		for rows in self.block_layer.cells:
-			for cell in rows:
-				tile = cell.tile
-				if tile:
-					#print tile.properties		
-					tempBlock = BaseStaticBlock(cell)
-					self.blocks.append(tempBlock)
-			
-		#self.schedule_interval(self.testHidingAllBlocksFromMap, 0.01)
+		
 
 	def parse_object_layer(self,file_path):
 		etree = ElementTree.parse(file_path).getroot()
 		for node in etree.findall('objectgroup'):
 			for spawn_object in node.findall('object'):
-				self.spawn_points.append(SpawnPoint(spawn_object))
+				spawn_point = SpawnPoint(spawn_object)
+				if (spawn_point.isPLayerSpawnPoint == True):
+					self.player_spawn_points.append(spawn_point)
+				else:
+					self.enemy_spawn_points.append(spawn_point)
 
-            #self.objectgroups.append(TiledObjectGroup(self, node))
+				
+
+
+	def parse_blocks_layer(self):
+		for rows in self.block_layer.cells:
+			for cell in rows:				
+				if cell.tile:					
+					self.blocks.append(BaseStaticBlock(cell))
+
 	
 	def testHidingAllBlocksFromMap(self, dt):
 		# test method
@@ -93,25 +94,7 @@ class SpawnPoint(object):
 	def __init__(self, node):
 		super(SpawnPoint, self).__init__()
 
-		print node
-
-		self.name = node.get('name')
-		self.x = node.get('x')
-		self.y = node.get('y')
+		self.isPLayerSpawnPoint = (node.get('name') == 'spawn_player_point')					
+		self.x = int(node.get('x'))
+		self.y = 520 - int(node.get('y'))
 		self.position = self.x,self.y
-
-		print self.name,"+++",self.position
-
-
-		
-
-
-
-
-
-
-
-
-
-
-		
