@@ -5,6 +5,7 @@ import pyglet
 import random
 import xml.etree.ElementTree as ET
 from models.bullet import Bullet
+from managers.sound_manager import SoundManager
 
 # TankBase - base class for all tanks 
 
@@ -19,6 +20,7 @@ class TankBase(cocos.sprite.Sprite):
         self.path = "" #path to sprite
         self.power = power # tanks power level
         self.direction = "needed to be defined" #!!!!!!!!!!!!!!!!!!!!
+        self.soundManager = SoundManager(0)
         #load texture in agreement with tank power
         self.bulletStartPosition = (0,0) #keep bullet current position
         if self.power == 0:
@@ -75,6 +77,7 @@ class TankBase(cocos.sprite.Sprite):
 
 
     def shoot(self,obj): #tank shoots
+        self.soundManager.play()
         if self.direction == 0:1
         bullet = Bullet("resources/bullets/0.png",self.bulletStartPosition,self.direction)
         #print 'Shoot start posotion=',self.position
