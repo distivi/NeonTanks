@@ -69,9 +69,11 @@ class BattleScreen(HandlerKey):
 	def info_enemeis(self):
 		easyEnemy = 6	#will be count
 		normalEnemy = 4 #will be count
-		hardEnemy = 20   #will be count
+		hardEnemy = 2  #will be count
 		width = self.win_width
 		height = self.win_height
+		indentSpriteWidth = self.win_width - 120
+		indentSpriteHeight = self.win_height - 60
 		indentLabelWidth = 100
 		indentLabelHeight = 20
 
@@ -80,44 +82,58 @@ class BattleScreen(HandlerKey):
 			anchor_x = 'left',
 			anchor_y = 'top',)
 		labelEnemy.position = width - indentLabelWidth , height - indentLabelHeight
-		indentLabelHeight += 20 
+		indentLabelHeight += 35 
 		self.add(labelEnemy)
 
+		#info easy panzers
+		spriteEasy = cocos.sprite.Sprite("resources/tanks/tank_standart.png")
+		spriteEasy.position = indentSpriteWidth, indentSpriteHeight
 		labelEasy = cocos.text.Label(("Easy: " + easyEnemy.__str__()), 
 			font_size = 11,
 			anchor_x = 'left',
 			anchor_y = 'top',)
 		labelEasy.position = width - indentLabelWidth , height - indentLabelHeight  
-		indentLabelHeight += 20
+		indentLabelHeight += 50
+		indentSpriteHeight -= 50
 		self.add(labelEasy)
+		self.add(spriteEasy)
 
+		#info normal panzers
+		spriteNormal = cocos.sprite.Sprite("resources/tanks/tank_fast.png")
+		spriteNormal.position = indentSpriteWidth, indentSpriteHeight 		
 		labelNormal = cocos.text.Label(("Normal: " + normalEnemy.__str__()), 
 			font_size = 11,
 			anchor_x = 'left',
 			anchor_y = 'top',)
 		labelNormal.position = width - indentLabelWidth , height - indentLabelHeight
-		indentLabelHeight += 20
+		indentLabelHeight += 50
+		indentSpriteHeight -= 50
 		self.add(labelNormal)
+		self.add(spriteNormal)
 
+		#info hard panzers
+		spriteHard = cocos.sprite.Sprite("resources/tanks/tank_heavy.png")
+		spriteHard.position = indentSpriteWidth, indentSpriteHeight 		
 		labelHard = cocos.text.Label(("Hard: " + hardEnemy.__str__()), 
 			font_size = 11,
 			anchor_x = "left",
 			anchor_y = "top",)
 		labelHard.position = width - 100 , height - indentLabelHeight
-		indentLabelHeight += 20
-		self.add(labelHard)	
+		indentLabelHeight += 50
+		self.add(labelHard)
+		self.add(spriteHard)
 
 	def info_panzer(self):
 		panzerHealth = "100%"		#will be count
 		
-		width = self.win_width
-		height = self.win_height
+		width = self.win_width - 100
+		height = self.win_height / 25
 
-		labelHealth = cocos.text.Label(("Health: " + panzerHealth), 
+		labelHealth = cocos.text.Label(("Health: [health_img]"), 
 			font_size = 12,
 			anchor_x = 'center',
 			anchor_y = 'center',)
-		labelHealth.position = width / 12 , height - 20 
+		labelHealth.position = width , height
 		self.add(labelHealth)
 
 	def button_menu(self):
