@@ -11,13 +11,13 @@ from managers.sound_manager import SoundManager
 # TankBase - base class for all tanks 
 
 class TankBase(cocos.sprite.Sprite):
-    def __init__(self,power,position=(200,200)):
+    def __init__(self,power,position=(200,200),isEnemy = True):
         super(TankBase,self).__init__("resources/tanks/tank_player.png",position)
         self.observers = [] # kepp observers
         self.x,self.y = position #base object position
         self.isMoving = False
         self.hp = 100 # tank's health
-        self.isAnemy = True # is tank anemy
+        self.isEnemy = isEnemy # is tank anemy
         self.path = "" #path to sprite
         self.power = power # tanks power level
         self.direction = 0        
@@ -35,6 +35,9 @@ class TankBase(cocos.sprite.Sprite):
         elif self.power == 3:
             self.direction = -1
             self.path = "resources/tanks/tank_player.png"
+
+        # WARNING: only for test
+        # self.path = "resources/tanks/tank_test.png"
 
         super(TankBase,self).__init__(self.path,position=(self.x,self.y))
 
@@ -86,10 +89,11 @@ class TankBase(cocos.sprite.Sprite):
         endMoving = cocos.actions.CallFunc(self.setMoving, False)
 
         self.do(startMoving + rotateTank + moveTank + endMoving)
+        
 
     def shoot(self,obj = 1): #tank shoots                
         self.soundManager.play()        
-        bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction)        
+        bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy)        
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):
                 observer.tankShoot(bullet)
@@ -97,8 +101,8 @@ class TankBase(cocos.sprite.Sprite):
 
     def get_next_step_rect(self):
         rect = self.get_rect()
-        distance = 20
-
+        distance = 20.0
+        
         if self.direction == -1: # stand
             return rect
         elif self.direction == 0: #move up
@@ -131,8 +135,8 @@ class TankBase(cocos.sprite.Sprite):
     def getPower(self): # get tank power
         return self.power
 
-    def isAnemy(self): # return tank anemy type
-        return self.isAnemy
+    def isEnemy(self): # return tank anemy type
+        return self.isEnemy
 
     def setPosition(self,position):        
         self.position = position 
@@ -146,7 +150,31 @@ class TankBase(cocos.sprite.Sprite):
     def setDirection(self,direction): #set tank direction        
         if direction != -1:
             self.bullet_direction = self.direction
-        self.direction = direction       
+
+        
+        if self.direction != direction and direction != -1:
+            self.direction = direction
+            if not self.isMoving:                
+                angle = 0
+                if direction == 0: #move up
+                    angle = 0
+                elif direction == 1: #move down
+                    angle = 180                
+                elif direction == 2: #move right
+                    angle = 90                                
+                elif direction == 3: # move left
+                    angle = 270                
+            
+                startMoving = cocos.actions.CallFunc(self.setMoving, True)
+                rotate_duration = 0 if angle == self.rotation else 0.2
+                rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
+                endMoving = cocos.actions.CallFunc(self.setMoving, False)
+                self.do(startMoving + rotateTank + endMoving)         
+            
+
+        self.direction = direction
+            
+        
         
     def setMoving(self,isMoving = False):        
         self.isMoving = isMoving            

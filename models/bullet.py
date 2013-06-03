@@ -6,11 +6,12 @@ import cocos
 import pyglet
 
 class Bullet(cocos.sprite.Sprite):
-    def __init__(self,path,position,direction):
+    def __init__(self,path,position,direction,isEnemy = True):
         super(Bullet,self).__init__(path,position)
         self.x,self.y = position
         self.speed = 0.05
         self.isMoving = False
+        self.isEnemy = isEnemy
         self.direction = direction
         self.init_real_position()
 

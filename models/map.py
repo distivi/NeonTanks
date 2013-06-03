@@ -59,27 +59,42 @@ class Map(cocos.layer.Layer):
 		self.blocks.remove(block)
 		
 
-	def deleteCellAtPosition(self,position):		
-		# will be dinamic removing block at position
-		finding_cell = self.block_layer.get_at_pixel(position[0],position[1])
-		print finding_cell
-		pass
-
 	def isTankCanMoveOnPosition(self, position):
 		cell = self.block_layer.get_at_pixel(position[0],position[1])
-		for block in self.blocks:
-			if cell == block.cell:
-				return False
+		if cell:
+			for block in self.blocks:				
+				if cell == block.cell:
+					return False
 		return True
 
 	def isBulletCanMoveOnPosition(self, position):
-		cell = self.block_layer.get_at_pixel(position[0],position[1])
-		for block in self.blocks:
-			if cell == block.cell:
-				return block.can_move_bullet				
+		cell = self.block_layer.get_at_pixel(position[0]+2,position[1]+2)
+		if cell:
+			for block in self.blocks:			
+				if cell == block.cell:
+					return block.can_move_bullet
 		return True
 
-	def destroyBlocksWithBulletRect(self,bullet):
+	def isTankCanMoveInRect(self,rect):
+		cells = self.block_layer.get_in_region(rect.x,rect.y,rect.topright[0],rect.topright[1])
+		for cell in cells:
+			for block in self.blocks:				
+				if cell == block.cell:
+					return False
+		return True
+
+	def isBulletCanMoveInRect(self,rect):		
+		cells = self.block_layer.get_in_region(rect.x,rect.y,rect.topright[0],rect.topright[1])		
+		isBulletCanMove = True
+		for cell in cells:
+			for block in self.blocks:				
+				if cell == block.cell and block.can_move_bullet == False:
+					self.removeBlock(block)					
+					isBulletCanMove = False
+		return isBulletCanMove
+		
+
+	def destroyBlocksWithBullet(self,bullet):
 		bullet_rect = bullet.get_rect() 
 		#rect.Rect(x, y, self.width, self.height)
 		cells = self.block_layer.get_in_region(bullet_rect.x,
