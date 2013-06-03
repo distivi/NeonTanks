@@ -37,6 +37,7 @@ class BattleScreen(HandlerKey):
 
 	def init_game(self):
 		self.game_manager = GameManager(1)
+		self.game_manager.attach(self)
 		self.game_manager.map.position = self.win_width / 2 - 260, self.win_height / 2 - 260
 		self.add(self.game_manager.map)
 
@@ -129,4 +130,14 @@ class BattleScreen(HandlerKey):
 
 	def go_to_main_menu(self):		
 		cocos.director.director.pop()
+
+
+	#######################################################
+	## Observer methods
+
+	def __call__(self, *arg):
+		pass
+
+	def update_info(self, info):
+		print info
 

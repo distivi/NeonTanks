@@ -12,15 +12,17 @@ class GameManager(object):
 
 	def __init__(self,level):
 		super(GameManager, self).__init__()	
+		self.observers = [] # keep observers
+
 		self.level = level	
 		self.map = Map('resources/maps/game_map.tmx')
 		
 		self.count_of_available_player_tanks = 5
 		
-		self.count_of_available_standart_tanks = 5
-		self.count_of_available_fast_tanks = 5
-		self.count_of_available_heavy_tanks = 5		
-		self.count_of_max_enemy_tanks_on_map = 5
+		self.standart_tanks_count = 1
+		self.fast_tanks_count = 1
+		self.heavy_tanks_count = 1		
+		self.count_of_max_enemy_tanks_on_map = 3
 
 		self.tanks = []	
 		self.bullets = []	
@@ -45,7 +47,11 @@ class GameManager(object):
 
 
 	def add_enemy_tank_to_map(self):
-		enemy_tank = TankBase(1)
+		tank_type = self.get_available_tank_type()
+		if tank_type == -1:
+			return
+
+		enemy_tank = TankBase(self.get_available_tank_type())
 		enemy_tank.attach(self)
 
 		self.tanks.append(enemy_tank)		
@@ -62,6 +68,10 @@ class GameManager(object):
 
 	
 	def add_player_tank_to_map(self):
+		if self.count_of_available_player_tanks == 0:
+			return
+
+		self.count_of_available_player_tanks -= 1
 		self.player_tank = TankBase(3,isEnemy = False)
 		self.player_tank.attach(self)
 		self.tanks.append(self.player_tank)
@@ -160,6 +170,37 @@ class GameManager(object):
 						self.bullets.remove(bullet1)
 						self.bullets.remove(bullet2)
 
+	def get_available_tank_type(self):		
+		type_list = [self.standart_tanks_count,self.fast_tanks_count,self.heavy_tanks_count]
+		if (type_list[0] + type_list[1] + type_list[2] == 0):
+			return -1
+		return 1
+		#  need check this code
+		# while True:
+		# 	tank_type = randint(0,2)
+		# 	if type_list[tank_type] > 0:
+		# 		if tank_type == 0:
+		# 			self.standart_tanks_count -= 1
+		# 		elif tank_type == 1:
+		# 			self.fast_tanks_count -= 1
+		# 		elif tank_type == 2:
+		# 			self.heavy_tanks_count -= 1					
+		# 		return tank_type
+
+
+
+	####################################################
+	## Observers methods
+
+	def attach(self,observer): #attach observer
+		self.observers.append(observer)
+
+	def update_info_for_observers(self):
+		for observer in self.observers:
+			if hasattr(observer,'update_info'):
+				info = {"tanks":10}
+				observer.update_info(info)
+
 
 	####################################################
 	##   TANK Observers methods
@@ -174,7 +215,26 @@ class GameManager(object):
 
 	def tankDestroyed(self,tank):
 		if tank in self.tanks:
+			if tank == self.player_tank and self.count_of_available_player_tanks == 0:
+				self.player_win()
+
 			self.tanks.remove(tank)
+			self.update_info_for_observers()
+
+			if len(self.tanks) == 0 and self.standart_tanks_count == 0 and self.fast_tanks_count == 0 and self.heavy_tanks_count == 0:
+				self.player_win()
+
+
+
+
+	######################################################
+	###  GAME ENDED
+
+	def player_win(self):
+		print "\n\n********************************\n YOU WIN \n ***********************"
+
+	def player_loose(self):
+		print "\n\n********************************\n YOU LOOSE \n ***********************"
 
 
 		
