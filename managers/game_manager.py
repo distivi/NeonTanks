@@ -6,6 +6,8 @@ from random import randint
 
 from models.map import Map
 from models.TankBase import TankBase
+from ui.winner_screen import WinnerScreen
+from ui.loser_screen import LoserScreen
 
 
 class GameManager(object):
@@ -231,10 +233,12 @@ class GameManager(object):
 	###  GAME ENDED
 
 	def player_win(self):
-		print "\n\n********************************\n YOU WIN \n ***********************"
+		winner = cocos.scene.Scene(WinnerScreen())
+		cocos.director.director.push(winner)
 
 	def player_loose(self):
-		print "\n\n********************************\n YOU LOOSE \n ***********************"
+		loser = cocos.scene.Scene(LoserScreen())
+		cocos.director.director.push(loser)
 
 
 		
