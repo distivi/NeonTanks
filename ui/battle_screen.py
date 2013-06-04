@@ -2,6 +2,8 @@
 
 import cocos
 from base_screen import BaseScreen
+from game_menu import GameMenu
+from main_menu import *
 from models.static_block import *
 from models.brick_block import *
 from models.map import Map
@@ -145,7 +147,11 @@ class BattleScreen(HandlerKey):
 		self.add(menu)
 
 	def go_to_main_menu(self):		
-		cocos.director.director.pop()
+		#game_menu_scene = cocos.scene.Scene(GameMenu())
+		#self.add(game_menu_scene)
+		cocos.director.director.init()
+		cocos.director.director.run(cocos.scene.Scene(GameMenu()))
+		#self.menu = MenuScreen()
 
 
 	#######################################################
