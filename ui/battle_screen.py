@@ -124,12 +124,12 @@ class BattleScreen(HandlerKey):
 		self.add(spriteHard)
 
 	def info_panzer(self):
-		panzerHealth = "100%"		#will be count
+		panzerHealth = 3		#will be count
 		
-		width = self.win_width - 100
-		height = self.win_height / 25
+		width = self.win_width - 80
+		height = self.win_height / 10
 
-		labelHealth = cocos.text.Label(("Health: [health_img]"), 
+		labelHealth = cocos.text.Label(("Health: " + panzerHealth.__str__()), 
 			font_size = 12,
 			anchor_x = 'center',
 			anchor_y = 'center',)
@@ -141,7 +141,7 @@ class BattleScreen(HandlerKey):
 		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_main_menu))
 		menu = cocos.menu.Menu()
 		menu.create_menu(button)
-		menu.position = -self.win_width / 2.5, -self.win_height / 2.5
+		menu.position = -self.win_width / 2.5, self.win_height / 2.5
 		self.add(menu)
 
 	def go_to_main_menu(self):		
