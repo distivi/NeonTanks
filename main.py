@@ -13,3 +13,7 @@ def main():
 	cocos.director.director.run(main_scene)
     
 if __name__ == '__main__': main()
+
+
+
+
