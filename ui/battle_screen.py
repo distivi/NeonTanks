@@ -131,7 +131,7 @@ class BattleScreen(HandlerKey):
 		width = self.win_width - 80
 		height = self.win_height / 10
 
-		labelHealth = cocos.text.Label(("Health: " + panzerHealth.__str__()), 
+		self.labelHealth = cocos.text.Label(("Health: " + panzerHealth.__str__()), 
 			font_size = 12,
 			anchor_x = 'center',
 			anchor_y = 'center',)
