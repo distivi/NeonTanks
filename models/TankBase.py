@@ -26,7 +26,7 @@ class TankBase(cocos.sprite.Sprite):
         self.setDirection(0)        
         self.soundManager = SoundManager(0)
 
-        #load texture in agreement with tank power
+        #load texture
 
         if self.power == 0:
             self.path = "resources/tanks/tank_standart.png"
@@ -98,7 +98,7 @@ class TankBase(cocos.sprite.Sprite):
         
 
     def shoot(self,obj = 1): #tank shoots        
-        self.soundManager.play()        
+        self.soundManager.playShoot()
         bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):

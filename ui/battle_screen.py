@@ -2,6 +2,8 @@
 
 import cocos
 from base_screen import BaseScreen
+from game_menu import GameMenu
+from main_menu import *
 from models.static_block import *
 from models.brick_block import *
 from models.map import Map
@@ -124,12 +126,12 @@ class BattleScreen(HandlerKey):
 		self.add(spriteHard)
 
 	def info_panzer(self):
-		panzerHealth = "100%"		#will be count
+		panzerHealth = 3		#will be count
 		
-		width = self.win_width - 100
-		height = self.win_height / 25
+		width = self.win_width - 80
+		height = self.win_height / 10
 
-		self.labelHealth = cocos.text.Label(("Health: [health_img]"), 
+		labelHealth = cocos.text.Label(("Health: " + panzerHealth.__str__()), 
 			font_size = 12,
 			anchor_x = 'center',
 			anchor_y = 'center',)
@@ -141,11 +143,15 @@ class BattleScreen(HandlerKey):
 		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_main_menu))
 		menu = cocos.menu.Menu()
 		menu.create_menu(button)
-		menu.position = -self.win_width / 2.5, -self.win_height / 2.5
+		menu.position = -self.win_width / 2.5, self.win_height / 2.5
 		self.add(menu)
 
 	def go_to_main_menu(self):		
-		cocos.director.director.pop()
+		#game_menu_scene = cocos.scene.Scene(GameMenu())
+		#self.add(game_menu_scene)
+		cocos.director.director.init()
+		cocos.director.director.run(cocos.scene.Scene(GameMenu()))
+		#self.menu = MenuScreen()
 
 
 	#######################################################
