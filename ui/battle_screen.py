@@ -149,8 +149,10 @@ class BattleScreen(HandlerKey):
 	def go_to_main_menu(self):		
 		#game_menu_scene = cocos.scene.Scene(GameMenu())
 		#self.add(game_menu_scene)
-		cocos.director.director.init()
-		cocos.director.director.run(cocos.scene.Scene(GameMenu()))
+		gameMenu = cocos.scene.Scene(GameMenu())
+		cocos.director.director.push(gameMenu)
+		#cocos.director.director.init()
+		#cocos.director.director.run(cocos.scene.Scene(GameMenu()))
 		#self.menu = MenuScreen()
 
 

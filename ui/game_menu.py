@@ -33,7 +33,7 @@ class GameMenu(BaseScreen):
 		self.add(menu)
 
 	def on_continue(self):
-		print "on_continue"
+		cocos.director.director.pop()
 
 	def on_load(self):
 		print "on_load"
