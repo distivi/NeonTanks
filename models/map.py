@@ -92,16 +92,32 @@ class Map(cocos.layer.Layer):
 					self.removeBlock(block)					
 					isBulletCanMove = False
 		return isBulletCanMove
+
+	def isBulletCanMove(self,bullet):
+		bullet_rect = bullet.get_rect()
+		cells = self.block_layer.get_in_region(bullet_rect.x,bullet_rect.y,bullet_rect.topright[0],bullet_rect.topright[1])		
+		isBulletCanMove = True
+		for cell in cells:
+			for block in self.blocks:				
+				if cell == block.cell and block.can_move_bullet == False:					
+					isBulletCanMove = False
+					self.destroyBlocksWithBullet(block,bullet)					
+
+		return isBulletCanMove
+
 		
 
-	def destroyBlocksWithBullet(self,bullet):
-		bullet_rect = bullet.get_rect() 
-		#rect.Rect(x, y, self.width, self.height)
-		cells = self.block_layer.get_in_region(bullet_rect.x,
-			bullet_rect.y,
-			bullet_rect.x + bullet_rect.width,
-			bullet_rect.y + bullet_rect.height)
-		print cells
+	def destroyBlocksWithBullet(self,block,bullet):
+		if block.hp <= bullet.power:
+			self.removeBlock(block)
+			
+		# bullet_rect = bullet.get_rect() 
+		# #rect.Rect(x, y, self.width, self.height)
+		# cells = self.block_layer.get_in_region(bullet_rect.x,
+		# 	bullet_rect.y,
+		# 	bullet_rect.x + bullet_rect.width,
+		# 	bullet_rect.y + bullet_rect.height)
+		# print cells		
 		# remove blocks
 
 

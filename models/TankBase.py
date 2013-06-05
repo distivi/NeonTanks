@@ -16,10 +16,12 @@ class TankBase(cocos.sprite.Sprite):
         self.observers = [] # kepp observers
         self.x,self.y = position #base object position
         self.isMoving = False
-        self.hp = 100 # tank's health
+        self.isRotating = False
+        self.hp = 5 # tank's health
         self.isEnemy = isEnemy # is tank anemy
         self.path = "" #path to sprite
         self.power = power # tanks power level
+        self.bullet_power = 0
         self.direction = 0        
         self.setDirection(0)        
         self.soundManager = SoundManager(0)
@@ -28,12 +30,16 @@ class TankBase(cocos.sprite.Sprite):
 
         if self.power == 0:
             self.path = "resources/tanks/tank_standart.png"
+            self.bullet_power = 1
         elif self.power == 1:
             self.path = "resources/tanks/tank_fast.png"
+            self.bullet_power = 1
         elif self.power == 2:
             self.path = "resources/tanks/tank_heavy.png"
+            self.bullet_power = 2
         elif self.power == 3:
             self.direction = -1
+            self.bullet_power = 1
             self.path = "resources/tanks/tank_player.png"
 
         # WARNING: only for test
@@ -91,9 +97,9 @@ class TankBase(cocos.sprite.Sprite):
         self.do(startMoving + rotateTank + moveTank + endMoving)
         
 
-    def shoot(self,obj = 1): #tank shoots                
+    def shoot(self,obj = 1): #tank shoots        
         self.soundManager.play()        
-        bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy)        
+        bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):
                 observer.tankShoot(bullet)
@@ -153,23 +159,32 @@ class TankBase(cocos.sprite.Sprite):
 
         
         if self.direction != direction and direction != -1:
-            self.direction = direction
-            if not self.isMoving:                
+            self.direction = direction                       
+            # need refactoring
+            '''
+            angle = 0
+            if direction == 0: #move up
                 angle = 0
-                if direction == 0: #move up
-                    angle = 0
-                elif direction == 1: #move down
-                    angle = 180                
-                elif direction == 2: #move right
-                    angle = 90                                
-                elif direction == 3: # move left
-                    angle = 270                
+            elif direction == 1: #move down
+                angle = 180                
+            elif direction == 2: #move right
+                angle = 90                                
+            elif direction == 3: # move left
+                angle = 270                
+        
+            startMoving = cocos.actions.CallFunc(self.setRotating, True)
+            rotate_duration = 0 if angle == self.rotation else 0.2
+            rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
+            endMoving = cocos.actions.CallFunc(self.setRotating, False)
             
-                startMoving = cocos.actions.CallFunc(self.setMoving, True)
-                rotate_duration = 0 if angle == self.rotation else 0.2
-                rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
-                endMoving = cocos.actions.CallFunc(self.setMoving, False)
+            if not self.isMoving: 
                 self.do(startMoving + rotateTank + endMoving)         
+            else:
+                actions = self.actions
+                actions.append(rotateTank)
+                self.do(actions)
+                '''
+
             
 
         self.direction = direction
@@ -177,7 +192,10 @@ class TankBase(cocos.sprite.Sprite):
         
         
     def setMoving(self,isMoving = False):        
-        self.isMoving = isMoving            
+        self.isMoving = isMoving
+
+    def setRotating(self,isRotating = False):
+        self.isRotating = isRotating
 
     def getXml(self):
         root = ET.Element('tank')		

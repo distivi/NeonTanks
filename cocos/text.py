@@ -111,6 +111,10 @@ class Label(TextElement):
 
     '''
     klass = pyglet.text.Label
+    def setText(self,text):        
+        self.kwargs['text']=text
+        self.create_element()
+
 
 
 class HTMLLabel(TextElement):

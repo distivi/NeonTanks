@@ -6,9 +6,10 @@ import cocos
 import pyglet
 
 class Bullet(cocos.sprite.Sprite):
-    def __init__(self,path,position,direction,isEnemy = True):
+    def __init__(self,path,position,direction,isEnemy = True, power = 1):
         super(Bullet,self).__init__(path,position)
         self.x,self.y = position
+        self.power = power
         self.speed = 0.05
         self.isMoving = False
         self.isEnemy = isEnemy
@@ -49,5 +50,10 @@ class Bullet(cocos.sprite.Sprite):
 
     def destroy(self): #destroy object
         self.kill()
+
+    def getXml(self):
+        root = ET.Element('bullet')
+        root.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'isEnemy':str(self.isEnemy)}
+        return root
         
         

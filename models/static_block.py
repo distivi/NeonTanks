@@ -5,7 +5,7 @@ class BaseStaticBlock(object):
 		super(BaseStaticBlock, self).__init__()		
 		self.cell = cell		
 		self.can_move_bullet = cell.tile.properties["can move bullet"] == 'True'
-		self.xp = cell.tile.properties["hp"]
+		self.hp = cell.tile.properties["hp"]
 
 
 		

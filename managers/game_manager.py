@@ -3,6 +3,7 @@
 import cocos
 import pyglet
 from random import randint
+import xml.etree.ElementTree as ET
 
 from models.map import Map
 from models.TankBase import TankBase
@@ -19,15 +20,16 @@ class GameManager(object):
 		self.level = level	
 		self.map = Map('resources/maps/game_map.tmx')
 		
-		self.count_of_available_player_tanks = 5
+		self.count_of_available_player_tanks = 2
 		
 		self.standart_tanks_count = 1
 		self.fast_tanks_count = 1
-		self.heavy_tanks_count = 1		
-		self.count_of_max_enemy_tanks_on_map = 3
+		self.heavy_tanks_count = 1	
+		self.count_of_max_enemy_tanks_on_map = 1
 
 		self.tanks = []	
 		self.bullets = []	
+		
 
 
 	def update(self):	
@@ -40,20 +42,25 @@ class GameManager(object):
 
 
 	def check_if_need_add_tanks_to_map(self):
-		if (len(self.tanks) < self.count_of_max_enemy_tanks_on_map):
+		is_player_tank_on_map = hasattr(self,'player_tank')
+		count_of_enemy_tanks_on_map = len(self.tanks) - 1 if is_player_tank_on_map else 0
+
+		if (count_of_enemy_tanks_on_map < self.count_of_max_enemy_tanks_on_map):
 			self.add_enemy_tank_to_map()
 
-		if not hasattr(self,'player_tank'):
+		if not is_player_tank_on_map:
 			self.add_player_tank_to_map()
 
 
 
 	def add_enemy_tank_to_map(self):
 		tank_type = self.get_available_tank_type()
+		print tank_type
+		
 		if tank_type == -1:
 			return
 
-		enemy_tank = TankBase(self.get_available_tank_type())
+		enemy_tank = TankBase(tank_type)
 		enemy_tank.attach(self)
 
 		self.tanks.append(enemy_tank)		
@@ -74,17 +81,23 @@ class GameManager(object):
 			return
 
 		self.count_of_available_player_tanks -= 1
+
 		self.player_tank = TankBase(3,isEnemy = False)
+
 		self.player_tank.attach(self)
+
 		self.tanks.append(self.player_tank)
 
 		count_of_spawn_point = len(self.map.player_spawn_points)
 
 		if count_of_spawn_point > 0:
 			randPointIndex = randint(0,count_of_spawn_point-1)
+
 			self.player_tank.setPosition(self.map.player_spawn_points[randPointIndex].position)
 		else:
+
 			self.player_tank.setPosition(self.map.player_spawn_points[randPointIndex].position)
+
 
 		self.map.add(self.player_tank)
 
@@ -95,7 +108,7 @@ class GameManager(object):
 		for bullet in self.bullets:
 			if not self.is_rect_inside_map(bullet.get_rect()):
 				bullet.destroy()
-				self.bullets.remove(bullet)			
+				self.bullets.remove(bullet)
 			elif self.is_bullet_hit_some_block(bullet) or self.is_bullet_hit_some_tank(bullet):				
 				bullet.destroy()
 				self.bullets.remove(bullet)
@@ -145,7 +158,7 @@ class GameManager(object):
 		return not self.map.isTankCanMoveInRect(rect)
 
 	def is_bullet_hit_some_block(self,bullet):		
-		return not self.map.isBulletCanMoveInRect(bullet.get_rect())
+		return not self.map.isBulletCanMove(bullet)
 
 	def is_bullet_hit_some_tank(self,bullet):
 		is_bullet_hit_tank = False
@@ -154,7 +167,7 @@ class GameManager(object):
 				tank_rect = tank.get_rect()
 				bullet_rect = bullet.get_rect()
 				if tank_rect.intersects(bullet_rect):
-					tank.damage(1000)
+					tank.damage(bullet.power)
 					if is_bullet_hit_tank == False:
 						is_bullet_hit_tank = True
 
@@ -176,18 +189,17 @@ class GameManager(object):
 		type_list = [self.standart_tanks_count,self.fast_tanks_count,self.heavy_tanks_count]
 		if (type_list[0] + type_list[1] + type_list[2] == 0):
 			return -1
-		return 1
-		#  need check this code
-		# while True:
-		# 	tank_type = randint(0,2)
-		# 	if type_list[tank_type] > 0:
-		# 		if tank_type == 0:
-		# 			self.standart_tanks_count -= 1
-		# 		elif tank_type == 1:
-		# 			self.fast_tanks_count -= 1
-		# 		elif tank_type == 2:
-		# 			self.heavy_tanks_count -= 1					
-		# 		return tank_type
+		
+		while True:
+			tank_type = randint(0,2)
+			if type_list[tank_type] > 0:
+				if tank_type == 0:
+					self.standart_tanks_count -= 1
+				elif tank_type == 1:
+					self.fast_tanks_count -= 1
+				elif tank_type == 2:
+					self.heavy_tanks_count -= 1					
+				return tank_type
 
 
 
@@ -196,11 +208,16 @@ class GameManager(object):
 
 	def attach(self,observer): #attach observer
 		self.observers.append(observer)
+		self.update_info_for_observers()
 
 	def update_info_for_observers(self):
 		for observer in self.observers:
 			if hasattr(observer,'update_info'):
-				info = {"tanks":10}
+				info = {}				
+				info["heavy_tanks_count"] = self.heavy_tanks_count
+				info["standart_tanks_count"] = self.standart_tanks_count
+				info["fast_tanks_count"] = self.fast_tanks_count
+				info["count_of_available_player_tanks"] = self.count_of_available_player_tanks
 				observer.update_info(info)
 
 
@@ -217,14 +234,26 @@ class GameManager(object):
 
 	def tankDestroyed(self,tank):
 		if tank in self.tanks:
-			if tank == self.player_tank and self.count_of_available_player_tanks == 0:
-				self.player_win()
 
 			self.tanks.remove(tank)
 			self.update_info_for_observers()
 
-			if len(self.tanks) == 0 and self.standart_tanks_count == 0 and self.fast_tanks_count == 0 and self.heavy_tanks_count == 0:
+			if tank == self.player_tank:
+				del(self.player_tank)
+				if self.count_of_available_player_tanks == 0:
+					self.player_loose()			
+
+			if len(self.tanks) == 1 and self.standart_tanks_count == 0 and self.fast_tanks_count == 0 and self.heavy_tanks_count == 0:
 				self.player_win()
+
+	######################################################
+	###  SAVE & LOAD
+
+	def save(self):
+		pass
+
+	def load(self):
+		pass
 
 
 
@@ -233,12 +262,15 @@ class GameManager(object):
 	###  GAME ENDED
 
 	def player_win(self):
+		print "player win"
 		winner = cocos.scene.Scene(WinnerScreen())
 		cocos.director.director.push(winner)
 
 	def player_loose(self):
 		loser = cocos.scene.Scene(LoserScreen())
 		cocos.director.director.push(loser)
+
+
 
 
 		

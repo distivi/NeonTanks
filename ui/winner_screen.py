@@ -11,7 +11,7 @@ class WinnerScreen(BaseScreen):
 	def __init__(self):
 		super(WinnerScreen, self).__init__()
 		self.create_layer()
-		self.create_menu
+		self.create_menu()
 		
 	def create_layer(self):		
 		label = cocos.text.Label("You are winner!!!",
@@ -31,7 +31,8 @@ class WinnerScreen(BaseScreen):
 		self.add(menu)
 
 	def on_continue(self):
-		print "on_continue"
+		# go to battle screen
+		pass
 
 	def on_quit(self):
 		exit()
