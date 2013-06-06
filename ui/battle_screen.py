@@ -8,6 +8,7 @@ from models.static_block import *
 from models.brick_block import *
 from models.map import Map
 from managers.game_manager import GameManager
+from models.bonus import Bonus
 from handler_key import *
 
 
@@ -27,6 +28,7 @@ class BattleScreen(HandlerKey):
 		self.update_tank_position()
 		self.game_manager.update()
 		self.game_manager.updateSpawnTanks()
+		self.game_manager.updateBonus()
 		
 
 	def create_layer(self):		

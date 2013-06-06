@@ -24,10 +24,10 @@ class Bonus(cocos.sprite.Sprite):
 
         super(Bonus,self).__init__(self.path,position)
         self.schedule_interval(self.update,4)
-       # self.schedule_interval(self.destroy,6)
+        self.schedule_interval(self.destroy,6)
 
     def update(self,obj):
-        print self.parent
+        #print self.parent
         while self.timeout > 0:
             self.blink()
             #print self.timeout
@@ -40,15 +40,16 @@ class Bonus(cocos.sprite.Sprite):
     def destroy(self,obj):
         #if self.timeout <= 0:
         self.kill()
+        print "Bonus removed"
             
         for observer in self.observers:
-            if hasattr(observer,"bonusDestroyed"):
-                observer.bonusDestroyed(self)
+            if hasattr(observer,"removeBonus"):
+                observer.removeBonus(self)
 
     def blink(self):
        action = cocos.actions.interval_actions.Blink(5,2)
        kill = cocos.actions.CallFunc(self.destroy,0)
-       self.do(action+kill)
+       self.do(action)
        self.timeout -=1
 
     def attach(self,observer):
@@ -58,7 +59,11 @@ class Bonus(cocos.sprite.Sprite):
         self.timeout = 100
 
     def tank_took_it(self):
-        self.destroy()
+        self.destroy(1)
+        print "Bonus destroyed"
         for observer in self.observers:
-            if hasattr(observer,"tank_took_it"):
-                observer.tank_took_it(self)
+            if hasattr(observer,"removeBonus"):
+                observer.removeBonus(self)
+
+    def get_bonus_type(self):
+        return self.bonusType

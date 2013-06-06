@@ -9,6 +9,7 @@ from models.map import Map
 from models.TankBase import TankBase
 from ui.winner_screen import WinnerScreen
 from ui.loser_screen import LoserScreen
+from models.bonus import Bonus
 
 
 class GameManager(object):
@@ -17,10 +18,13 @@ class GameManager(object):
 		super(GameManager, self).__init__()	
 		self.observers = [] # keep observers
 
+        #set game options
 		self.level = level	
 		self.map = Map('resources/maps/game_map.tmx')
 		
 		self.count_of_available_player_tanks = 2
+        
+		self.count_of_available_player_tanks = 5
 		
 		self.standart_tanks_count = 1
 		self.fast_tanks_count = 1
@@ -29,7 +33,8 @@ class GameManager(object):
 
 		self.tanks = []	
 		self.bullets = []	
-		
+		self.bonuses = []
+		self.timeout = 500
 
 
 	def update(self):	
@@ -39,7 +44,6 @@ class GameManager(object):
 
 	def updateSpawnTanks(self):
 		self.check_if_need_add_tanks_to_map()
-
 
 	def check_if_need_add_tanks_to_map(self):
 		is_player_tank_on_map = hasattr(self,'player_tank')
@@ -101,6 +105,44 @@ class GameManager(object):
 
 		self.map.add(self.player_tank)
 
+	#--------------------bonus system---------------
+	def add_bonus_to_map(self):
+		x = randint(1,24)*20
+		y = randint(1,24)*20
+		self.bonus = Bonus(0,position=(x,y))
+		self.bonus.attach(self)
+		self.map.add(self.bonus, z = 5)
+		self.bonuses.append(self.bonus)
+		print "Bonus added"
+		
+	
+	def check_if_bonus_need(self):
+		if len(self.bonuses) == 0:
+			print "Bonus needed"
+			self.add_bonus_to_map()
+
+	def check_if_tank_get_bonus(self):
+		tank_rect = self.player_tank.get_rect()
+		for bonus in self.bonuses:
+			bonus_rect = bonus.get_rect()
+			if tank_rect.intersects(bonus_rect):
+				#self.removeBonus(bonus)
+				bonus.tank_took_it()				
+				#bonus.destroy(0)
+				print "Tank got bonus"
+
+
+	def updateBonus(self):
+		if self.timeout <= 0:
+			self.check_if_bonus_need()
+			self.timeout = 500
+		self.check_if_tank_get_bonus()
+		self.timeout -= 1
+
+	def removeBonus(self,bonus):
+		if bonus in self.bonuses:
+			self.bonuses.remove(bonus)
+	#-----------------------------------------------
 
 	def move_bullets(self):
 		self.remove_bullets_that_intersects()
