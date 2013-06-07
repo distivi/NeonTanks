@@ -197,10 +197,10 @@ class TankBase(cocos.sprite.Sprite):
     def setRotating(self,isRotating = False):
         self.isRotating = isRotating
 
-    def getXml(self):
-        root = ET.Element('tank')		
-        root.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}
-        return root
+    def getXmlWithParrentNode(self,root):
+        tankNode = ET.SubElement(root,'tank')		
+        tankNode.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}
+        return tankNode
 
     def defineSpeed(self):
         if self.power == 0: #fast tank

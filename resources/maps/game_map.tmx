@@ -40,6 +40,26 @@
    eJztVUEOgCAMQ/n/n714WJZ2VNgSJTbpQSztgnO09i6cZI2ReXRDtrc7/sCwZ3bcjL6J11oibyV/5X2GJuq37BwFWbUoHhk+alb2PtR3qDeV2VJxDmgeRf/QyGuljgrtzjmoT1hPoVmIdOzeqqj/KXbM8VnKvTabFT2P9LP4Ws4FqzMA/g==
   </data>
  </layer>
+ <layer name="level_01" width="26" height="26">
+  <data encoding="base64" compression="zlib">
+   eJztklEKwDAIQ7W7/533s4GUmLmhsrIF8hNtXikVwRpOnq2fw7vmvmGshyNS8ferObY/i4MU5WT022w1DjuH8goO29+Ao/92nrPZGzlMXZyrO3RxMp0lBfZ2qtXFeaKV36DjH52cO/kXODtK4gEm
+  </data>
+ </layer>
+ <layer name="level_02" width="26" height="26">
+  <data encoding="base64" compression="zlib">
+   eJztlDEKACAIAK3+/+emoCFN6wgCD1xCvQpUJElEihFkv4SlHUSECoXXccIvHq1ulRe555gry2v1887la8/c0zonPGS9Jy+yD+k8ul7bLzd7R/Ps9gzp0SA84088HuJNOw/FracDfhABAQ==
+  </data>
+ </layer>
+ <layer name="level_03" width="26" height="26">
+  <data encoding="base64" compression="zlib">
+   eJzt1eEKgCAMBOCZ7//O/Y3jdLcl0awDkWT6hcQy+5NJu4yKTjN+9gF1o2ecZ/VZB4fyXhilbqUzux/mKPve6GTnqg6e48Xb14P1X3G8oOMl2zsjDva3iKc6rF9XddCIOOy/MPq27jrK2pMO83ZzTvLbASU=
+  </data>
+ </layer>
+ <layer name="level_04" width="26" height="26">
+  <data encoding="base64" compression="zlib">
+   eJztlEEOwCAIBBX+/+de4EIoAoKJTTfZi+KORnGMXyeF5G5BkjPJnny25HgyPDVI+czr4DAjwgGxxiNZ77mfXUY1xzp3F8dyhCPvEBfW8t/egVWzUoQDRk0FJ6qpGApyuzmRntrJuokT6Svtj8n0aXaP3vEbOJm5L3MeaacBBg==
+  </data>
+ </layer>
  <objectgroup name="spawn_points" width="26" height="26">
   <object name="spawn_point" x="20" y="20" width="20" height="20"/>
   <object name="spawn_point" x="240" y="20" width="20" height="20"/>

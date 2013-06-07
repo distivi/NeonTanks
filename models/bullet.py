@@ -4,6 +4,7 @@
 
 import cocos
 import pyglet
+import xml.etree.ElementTree as ET
 
 class Bullet(cocos.sprite.Sprite):
     def __init__(self,path,position,direction,isEnemy = True, power = 1):
@@ -51,9 +52,9 @@ class Bullet(cocos.sprite.Sprite):
     def destroy(self): #destroy object
         self.kill()
 
-    def getXml(self):
-        root = ET.Element('bullet')
-        root.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'isEnemy':str(self.isEnemy)}
-        return root
+    def getXmlWithParrentNode(self,root):
+        bulletNode = ET.SubElement(root,'bullet')
+        bulletNode.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'isEnemy':str(self.isEnemy)}
+        return bulletNode
         
         

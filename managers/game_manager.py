@@ -23,8 +23,6 @@ class GameManager(object):
 		self.map = Map('resources/maps/game_map.tmx')
 		
 		self.count_of_available_player_tanks = 2
-        
-		self.count_of_available_player_tanks = 5
 		
 		self.standart_tanks_count = 1
 		self.fast_tanks_count = 1
@@ -44,6 +42,7 @@ class GameManager(object):
 
 	def updateSpawnTanks(self):
 		self.check_if_need_add_tanks_to_map()
+
 
 	def check_if_need_add_tanks_to_map(self):
 		is_player_tank_on_map = hasattr(self,'player_tank')
@@ -292,12 +291,56 @@ class GameManager(object):
 	###  SAVE & LOAD
 
 	def save(self):
-		pass
+		print "saving game"
+		root = ET.Element('game')
+		root.attrib = {'level':str(self.level)}
+
+		for tank in self.tanks:
+			tank.getXmlWithParrentNode(root)
+			
+		for bullet in self.bullets:
+			bulletNode = bullet.getXmlWithParrentNode(root)
+
+		self.map.getXmlWithParrentNode(root)
+
+		xmlData = ET.tostring(root, encoding="utf-8")
+
+		xmlFile = open('resources/saves/test.xml','wb')
+		xmlFile.write(xmlData)
+		xmlFile.close()
+
+
+        '''
+        root = ET.Element('root')		
+			root.attrib = {'ID':'FILES_INFO'}	
+			files = self.getFilesFromResources()
+			i = 0
+			for tmpFile in files:
+				nodeFile = ET.SubElement(root,'file')
+				
+				nodeFileId = ET.SubElement(nodeFile,'id')
+				nodeFileId.text = str(i)
+
+				nodeFileName = ET.SubElement(nodeFile,'name')
+				nodeFileName.text = tmpFile.split('/')[-1]
+
+				nodeFilePath = ET.SubElement(nodeFile,'path')
+				nodeFilePath.text = tmpFile
+
+				nodeFilePath = ET.SubElement(nodeFile,'description')
+				nodeFilePath.text = "default description"
+				i += 1
+
+			xmlData = ET.tostring(root, encoding="utf-8")
+
+			xmlFile = open(self.resourcesXML,'wb')
+			xmlFile.write(xmlData)
+			xmlFile.close()
+        '''
+		
 
 	def load(self):
 		pass
-
-
 
 
 	######################################################
