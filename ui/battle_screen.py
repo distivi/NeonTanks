@@ -2,7 +2,7 @@
 
 import cocos
 from base_screen import BaseScreen
-from game_menu import GameMenu
+from game_menu import *
 from main_menu import *
 from models.static_block import *
 from models.brick_block import *
@@ -149,14 +149,9 @@ class BattleScreen(HandlerKey):
 		self.add(menu)
 
 	def go_to_main_menu(self):		
-		#game_menu_scene = cocos.scene.Scene(GameMenu())
-		#self.add(game_menu_scene)
-		self.game_manager.save()
-		gameMenu = cocos.scene.Scene(GameMenu())
-		cocos.director.director.push(gameMenu)
-		#cocos.director.director.init()
-		#cocos.director.director.run(cocos.scene.Scene(GameMenu()))
-		#self.menu = MenuScreen()
+		self.create_menu()
+		
+
 
 
 	#######################################################
@@ -173,5 +168,25 @@ class BattleScreen(HandlerKey):
 		self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
 		
 		
-		
+	def create_menu(self):
+		menu_list = []
+		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
+		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
+		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
+		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
+		self.menu = cocos.menu.Menu()
+		self.menu.create_menu(menu_list);
+		self.menu.position = 0, 0
+		self.add(self.menu)
 
+	def on_continue(self):
+		self.remove(self.menu)
+
+	def on_load(self):
+		print "on_load"
+		
+	def on_save(self):
+		print "on_save"		
+
+	def on_quit(self):
+		print "quit"
