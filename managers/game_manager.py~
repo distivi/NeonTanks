@@ -109,7 +109,7 @@ class GameManager(object):
 	def add_bonus_to_map(self):
 		x = randint(1,24)*20
 		y = randint(1,24)*20
-		self.bonus = Bonus(randint(0,2),position=(x,y))
+		self.bonus = Bonus(0,position=(x,y))
 		self.bonus.attach(self)
 		self.map.add(self.bonus, z = 5)
 		self.bonuses.append(self.bonus)

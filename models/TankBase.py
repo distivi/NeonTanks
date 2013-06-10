@@ -41,6 +41,10 @@ class TankBase(cocos.sprite.Sprite):
             self.direction = -1
             self.bullet_power = 1
             self.path = "resources/tanks/tank_player.png"
+        elif self.power == 4:
+            self.bullet_power = 2
+            self.direction = -1
+            self.path = "resources/tanks/tank_player_heavy.png"
 
         # WARNING: only for test
         # self.path = "resources/tanks/tank_test.png"
@@ -49,7 +53,7 @@ class TankBase(cocos.sprite.Sprite):
 
         self.defineSpeed()
 
-        if self.power != 3:
+        if self.power != 3 and self.power != 4:
             # for enemy tanks
             self.schedule_interval(self.AI_movement,3) #change direction every 1.5 sec
             self.schedule_interval(self.shoot,2) # shoots every 2 seconds
@@ -216,3 +220,10 @@ class TankBase(cocos.sprite.Sprite):
 
     def slowDown(self,koef=0.5): # define speed after slow down bonus got(only for enemy tanks
         self.speed = self.speed/koef
+
+    def setPath(self, path):
+        self.path = path
+        #super(TankBase,self).__init__(self.path,position=(self.x,self.y)) 
+
+    def getPath(self):
+        return self.path

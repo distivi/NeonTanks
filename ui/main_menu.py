@@ -26,7 +26,7 @@ class MenuScreen(BaseScreen):
 		menu_list = []
 		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
 		menu_list.append(cocos.menu.MenuItem('New Game',self.on_new_game))
-		menu_list.append(cocos.menu.MenuItem('Tank crash test', self.on_crashTest ))
+		#menu_list.append(cocos.menu.MenuItem('Tank crash test', self.on_crashTest ))
 		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
 		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
 		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
