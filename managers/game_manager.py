@@ -32,7 +32,7 @@ class GameManager(object):
 		self.tanks = []	
 		self.bullets = []	
 		self.bonuses = []
-		self.timeout = 500
+		self.timeout = 500 # bonus apearence frequency
 
 
 	def update(self):	
@@ -79,13 +79,13 @@ class GameManager(object):
 		self.map.add(enemy_tank)
 
 	
-	def add_player_tank_to_map(self):
+	def add_player_tank_to_map(self,tankType = 3):
 		if self.count_of_available_player_tanks == 0:
 			return
 
 		self.count_of_available_player_tanks -= 1
 
-		self.player_tank = TankBase(3,isEnemy = False)
+		self.player_tank = TankBase(tankType,isEnemy = False)
 
 		self.player_tank.attach(self)
 
@@ -104,11 +104,12 @@ class GameManager(object):
 
 		self.map.add(self.player_tank)
 
-	#--------------------bonus system---------------
+	######################################################
+	## Bonus system
 	def add_bonus_to_map(self):
 		x = randint(1,24)*20
 		y = randint(1,24)*20
-		self.bonus = Bonus(0,position=(x,y))
+		self.bonus = Bonus(2,position=(x,y))
 		self.bonus.attach(self)
 		self.map.add(self.bonus, z = 5)
 		self.bonuses.append(self.bonus)
@@ -125,9 +126,8 @@ class GameManager(object):
 		for bonus in self.bonuses:
 			bonus_rect = bonus.get_rect()
 			if tank_rect.intersects(bonus_rect):
-				#self.removeBonus(bonus)
-				bonus.tank_took_it()				
-				#bonus.destroy(0)
+				bonus.tank_took_it()
+				self.reward(bonus.get_bonus_type())				
 				print "Tank got bonus"
 
 
@@ -141,7 +141,26 @@ class GameManager(object):
 	def removeBonus(self,bonus):
 		if bonus in self.bonuses:
 			self.bonuses.remove(bonus)
-	#-----------------------------------------------
+	
+	def reward(self,bonusType):
+		print "Rewarded"
+		if bonusType == 0: # make tank more powerfull
+			#self.player_tank.got_bonus()
+			print "Got star"
+		elif bonusType == 1: # slow down enemy tank
+			self.slow_down_all_enemy_tanks()
+		else: # destroy all enemy tanks
+			self.destroy_all_enemy_tanks()
+
+	def slow_down_all_enemy_tanks(self):
+		pass
+
+	def destroy_all_enemy_tanks(self): # destroy all enemy tanks on the map
+		for tank in self.tanks:
+			if tank.isEnemy:
+				self.tankDestroyed(tank)
+				tank.destroy()		
+	############################################################
 
 	def move_bullets(self):
 		self.remove_bullets_that_intersects()
