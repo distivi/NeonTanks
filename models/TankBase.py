@@ -6,7 +6,7 @@ import pyglet
 from random import randint
 import xml.etree.ElementTree as ET
 from models.bullet import Bullet
-from managers.sound_manager import SoundManager
+#from managers.sound_manager import SoundManager
 
 # TankBase - base class for all tanks 
 
@@ -24,7 +24,7 @@ class TankBase(cocos.sprite.Sprite):
         self.bullet_power = 0
         self.direction = 0        
         self.setDirection(0)        
-        self.soundManager = SoundManager(0)
+        #self.soundManager = SoundManager(0)
 
         #load texture
 
@@ -98,7 +98,7 @@ class TankBase(cocos.sprite.Sprite):
         
 
     def shoot(self,obj = 1): #tank shoots        
-        self.soundManager.playShoot()
+        #self.soundManager.playShoot()
         bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):
@@ -209,3 +209,10 @@ class TankBase(cocos.sprite.Sprite):
             self.speed = 0.2
         else: # heavy tank
             self.speed = 0.2
+
+    # Testing zone
+    def got_bonus(self):
+        self.path = "resources/tanks/tank_heavy.png"
+
+    def slowDown(self,koef=0.5): # define speed after slow down bonus got(only for enemy tanks
+        self.speed = self.speed/koef
