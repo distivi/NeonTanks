@@ -214,13 +214,13 @@ class TankBase(cocos.sprite.Sprite):
         else: # heavy tank
             self.speed = 0.2
 
-    # Testing zone
-    def got_bonus(self):
-        self.path = "resources/tanks/tank_heavy.png"
-
     def slowDown(self,koef=0.5): # define speed after slow down bonus got(only for enemy tanks
         self.speed = self.speed/koef
 
+    def got_bonus(self): # WARNING Only for enemy tanks
+        self.path = "resources/tanks/tank_heavy.png"
+
+    # Testing zone
     def setPath(self, path):
         self.path = path
         #super(TankBase,self).__init__(self.path,position=(self.x,self.y)) 

@@ -145,17 +145,8 @@ class GameManager(object):
 	def reward(self,bonusType):
 		print "Rewarded"
 		if bonusType == 0: # make tank more powerfull
-			if self.player_tank.getPower() == 3:
-				#print self.player_tank.getPath()
-				#self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
-				#print self.player_tank.getPath()
-				#self.player_tank.draw()
-				for tank in self.tanks:
-					if not tank.isEnemy:
-						self.tanks.remove(tank)
-						self.player_tank.destroy()
-						self.add_player_tank_to_map(4)
-				print "Got star"
+			self.upgrade_tank()
+			print "Got star"
 		elif bonusType == 1: # slow down enemy tank
 			self.slow_down_all_enemy_tanks()
 		else: # destroy all enemy tanks
@@ -170,7 +161,16 @@ class GameManager(object):
 		for tank in self.tanks:
 			if tank.isEnemy:
 				self.tankDestroyed(tank)
-				tank.destroy()		
+				tank.destroy()
+	def upgrade_tank(self):
+		if self.player_tank.getPower() == 3:
+			#self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
+			for tank in self.tanks:
+				if not tank.isEnemy:
+					self.tanks.remove(tank)
+					self.player_tank.destroy()
+					self.add_player_tank_to_map(4)
+		
 	############################################################
 	## Bonus system end ##
 
