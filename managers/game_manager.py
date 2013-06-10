@@ -109,7 +109,7 @@ class GameManager(object):
 	def add_bonus_to_map(self):
 		x = randint(1,24)*20
 		y = randint(1,24)*20
-		self.bonus = Bonus(2,position=(x,y))
+		self.bonus = Bonus(1,position=(x,y))
 		self.bonus.attach(self)
 		self.map.add(self.bonus, z = 5)
 		self.bonuses.append(self.bonus)
@@ -153,7 +153,9 @@ class GameManager(object):
 			self.destroy_all_enemy_tanks()
 
 	def slow_down_all_enemy_tanks(self):
-		pass
+		for tank in self.tanks:
+			if tank.isEnemy:
+				tank.slowDown()
 
 	def destroy_all_enemy_tanks(self): # destroy all enemy tanks on the map
 		for tank in self.tanks:
@@ -161,6 +163,7 @@ class GameManager(object):
 				self.tankDestroyed(tank)
 				tank.destroy()		
 	############################################################
+	## Bonus system end ##
 
 	def move_bullets(self):
 		self.remove_bullets_that_intersects()
