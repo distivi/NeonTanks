@@ -168,8 +168,10 @@ class GameManager(object):
 			for tank in self.tanks:
 				if not tank.isEnemy:
 					self.tanks.remove(tank)
+					position = self.player_tank.getPosition()
 					self.player_tank.destroy()
 					self.add_player_tank_to_map(4)
+					self.player_tank.setPosition(position)
 		
 	############################################################
 	## Bonus system end ##
