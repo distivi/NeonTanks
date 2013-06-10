@@ -142,15 +142,17 @@ class BattleScreen(HandlerKey):
 
 	def button_menu(self):
 		button = []
-		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_main_menu))
+		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_game_menu))
 		menu = cocos.menu.Menu()
 		menu.create_menu(button)
 		menu.position = -self.win_width / 2.5, self.win_height / 2.5
 		self.add(menu)
 
-	def go_to_main_menu(self):		
-		self.create_menu()
-		
+	def go_to_game_menu(self):		
+		self.game_menu()
+		self.game_menu_background()
+		self.unschedule(self.update)
+		#self.add(GameMenu(), z = 1)
 
 
 
@@ -168,7 +170,8 @@ class BattleScreen(HandlerKey):
 		self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
 		
 		
-	def create_menu(self):
+	def game_menu(self):
+		#create menu items 
 		menu_list = []
 		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
 		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
@@ -177,10 +180,18 @@ class BattleScreen(HandlerKey):
 		self.menu = cocos.menu.Menu()
 		self.menu.create_menu(menu_list);
 		self.menu.position = 0, 0
-		self.add(self.menu)
+		self.add(self.menu, z = 1)
+
+	def game_menu_background(self):
+		#create background game_menu
+		self.menu_background  = cocos.sprite.Sprite("resources/fon/menu_background.jpg")
+		self.menu_background.position = self.win_width / 2, (self.win_height / 2) + 25
+		self.add(self.menu_background, z = 0)
 
 	def on_continue(self):
 		self.remove(self.menu)
+		self.remove(self.menu_background)
+		self.schedule_interval(self.update, 0.01) 
 
 	def on_load(self):
 		print "on_load"
