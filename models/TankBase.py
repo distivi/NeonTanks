@@ -17,6 +17,7 @@ class TankBase(cocos.sprite.Sprite):
         self.x,self.y = position #base object position
         self.isMoving = False
         self.isRotating = False
+        self.isNeedRotateAfterMoving = False
         self.hp = 5 # tank's health
         self.isEnemy = isEnemy # is tank anemy
         self.path = "" #path to sprite
@@ -25,6 +26,7 @@ class TankBase(cocos.sprite.Sprite):
         self.direction = 0        
         self.setDirection(0)        
         self.soundManager = SoundManager(0)
+        self.moving_animation = None
 
         #load texture
 
@@ -72,29 +74,36 @@ class TankBase(cocos.sprite.Sprite):
 
         if self.direction == -1: # stand
             return
-        elif self.direction == 0: #move up
-            angle = 0 
-            pos = 0,distance
 
-        elif self.direction == 1: #move down
-            angle = 180
-            pos = 0,-distance
+        angle = self.direction * 90
+        isTankMoveByY = (self.direction % 2 == 0)
+        isTankMoveingPositive = (self.direction ==0 or self.direction ==1)
+        pluxMinusDirection = 1 if isTankMoveingPositive else -1
 
-        elif self.direction == 2: #move right
-            angle = 90
-            pos = distance,0 
+        if isTankMoveByY:
+            pos = 0,distance * pluxMinusDirection
+        else:
+            pos = distance * pluxMinusDirection, 0
             
-        elif self.direction == 3: # move left
-            angle = 270
-            pos = -distance,0            
-
         startMoving = cocos.actions.CallFunc(self.setMoving, True)
         rotate_duration = 0 if angle == self.rotation else 0.2
         rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
         moveTank = cocos.actions.MoveBy(pos, duration = self.speed)
         endMoving = cocos.actions.CallFunc(self.setMoving, False)
+        
+        self.moving_animation = startMoving + rotateTank + moveTank + endMoving
 
-        self.do(startMoving + rotateTank + moveTank + endMoving)
+        self.do(self.moving_animation)
+
+    def rotate_tank(self):
+        if self.direction == -1:
+            return
+
+        angle = self.direction * 90        
+        rotate_duration = 0 if angle == self.rotation else 0.2
+        rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
+        self.do(rotateTank)
+
         
 
     def shoot(self,obj = 1): #tank shoots        
@@ -111,16 +120,17 @@ class TankBase(cocos.sprite.Sprite):
         
         if self.direction == -1: # stand
             return rect
-        elif self.direction == 0: #move up
-            rect.y += distance
-        elif self.direction == 1: #move down
-            rect.y -= distance
-        elif self.direction == 2: #move right
-            rect.x += distance            
-        elif self.direction == 3: # move left
-            rect.x -= distance
-        return rect
 
+        isTankMoveByY = (self.direction % 2 == 0)
+        isTankMoveingPositive = (self.direction ==0 or self.direction ==1)
+        pluxMinusDirection = 1 if isTankMoveingPositive else -1
+
+        if isTankMoveByY:
+            rect.y += distance * pluxMinusDirection
+        else:
+            rect.x += distance * pluxMinusDirection
+        return rect
+    
 
     def damage(self,damage_point): # set tank damage
         self.hp -= damage_point
@@ -153,46 +163,19 @@ class TankBase(cocos.sprite.Sprite):
     def getDirection(self): #get tank direction
         return self.direction
 
-    def setDirection(self,direction): #set tank direction        
-        if direction != -1:
-            self.bullet_direction = self.direction
-
-        
-        if self.direction != direction and direction != -1:
-            self.direction = direction                       
-            # need refactoring
-            '''
-            angle = 0
-            if direction == 0: #move up
-                angle = 0
-            elif direction == 1: #move down
-                angle = 180                
-            elif direction == 2: #move right
-                angle = 90                                
-            elif direction == 3: # move left
-                angle = 270                
-        
-            startMoving = cocos.actions.CallFunc(self.setRotating, True)
-            rotate_duration = 0 if angle == self.rotation else 0.2
-            rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
-            endMoving = cocos.actions.CallFunc(self.setRotating, False)
-            
-            if not self.isMoving: 
-                self.do(startMoving + rotateTank + endMoving)         
-            else:
-                actions = self.actions
-                actions.append(rotateTank)
-                self.do(actions)
-                '''
-
-            
-
+    def setDirection(self,direction): #set tank direction     
         self.direction = direction
-            
-        
+
+        if not self.isMoving:           
+            if direction != -1:
+                self.bullet_direction = direction            
+        # else:
+        #     self.rotate_tank()
+
         
     def setMoving(self,isMoving = False):        
         self.isMoving = isMoving
+                    
 
     def setRotating(self,isRotating = False):
         self.isRotating = isRotating

@@ -19,7 +19,6 @@ class BattleScreen(HandlerKey):
 		self.info_enemeis()
 		self.info_panzer()
 		self.button_menu()
-
 		self.init_game()		
 		self.schedule_interval(self.update, 0.01) 
 
@@ -52,13 +51,13 @@ class BattleScreen(HandlerKey):
 				tank_direction = 3
 
 			elif RIGHT in self.chars_pressed:			
-				tank_direction = 2
+				tank_direction = 1
 
 			elif UP in self.chars_pressed:			
 				tank_direction = 0
 
 			elif DOWN in self.chars_pressed:			
-				tank_direction = 1
+				tank_direction = 2
 
 			self.game_manager.player_tank.user_select_direction(tank_direction)
 			
@@ -184,6 +183,9 @@ class BattleScreen(HandlerKey):
 
 	def on_load(self):
 		print "on_load"
+
+	def on_pouse(self):
+		print "pouse"
 		
 	def on_save(self):
 		print "on_save"		

@@ -25,10 +25,10 @@ class Bullet(cocos.sprite.Sprite):
         if self.direction == 0: #move up            
             self.move_posistion = 0,distance
 
-        elif self.direction == 1: #move down            
+        elif self.direction == 2: #move down            
             self.move_posistion = 0,-distance
 
-        elif self.direction == 2: #move right            
+        elif self.direction == 1: #move right            
             self.move_posistion = distance,0
             
         elif self.direction == 3: # move left            
