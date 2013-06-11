@@ -149,10 +149,10 @@ class BattleScreen(HandlerKey):
 		self.add(menu)
 
 	def go_to_game_menu(self):		
-		self.game_menu()
-		self.game_menu_background()
 		self.unschedule(self.update)
-		#self.add(GameMenu(), z = 1)
+		self.game_menu = GameMenu()
+		self.game_menu.attach(self)
+		self.add(self.game_menu, z = 1)
 
 
 
@@ -169,35 +169,7 @@ class BattleScreen(HandlerKey):
 		self.labelFast.setText(  "Fast:     " + info["fast_tanks_count"].__str__())
 		self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
 		
+	def resume_game_menu(self):
+		self.remove(self.game_menu)
+		self.schedule_interval(self.update, 0.01)
 		
-	def game_menu(self):
-		#create menu items 
-		menu_list = []
-		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
-		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
-		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
-		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
-		self.menu = cocos.menu.Menu()
-		self.menu.create_menu(menu_list);
-		self.menu.position = 0, 0
-		self.add(self.menu, z = 1)
-
-	def game_menu_background(self):
-		#create background game_menu
-		self.menu_background  = cocos.sprite.Sprite("resources/fon/menu_background.jpg")
-		self.menu_background.position = self.win_width / 2, (self.win_height / 2) + 25
-		self.add(self.menu_background, z = 0)
-
-	def on_continue(self):
-		self.remove(self.menu)
-		self.remove(self.menu_background)
-		self.schedule_interval(self.update, 0.01) 
-
-	def on_load(self):
-		print "on_load"
-		
-	def on_save(self):
-		print "on_save"		
-
-	def on_quit(self):
-		print "quit"
