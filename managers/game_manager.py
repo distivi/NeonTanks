@@ -32,6 +32,8 @@ class GameManager(object):
 		self.tanks = []	
 		self.bullets = []	
 		self.bonuses = []
+		self.add_base()
+
 		self.timeout = 500
 
 
@@ -104,6 +106,28 @@ class GameManager(object):
 
 		self.map.add(self.player_tank)
 
+	def add_base(self):
+		self.base = cocos.sprite.Sprite('resources/base/base.png')		
+		self.base.position = self.map.base_spawn_point.position		
+		self.map.add(self.base)
+
+	#--------------------base system ---------------
+
+	def is_rect_hit_base(self,rect):
+		if self.base:
+			base_rect = self.base.get_rect()
+			return base_rect.intersect(rect)
+
+	def destroy_base(self):
+		print self.base
+		if self.base:
+			self.base.kill()
+			print self.base
+			self.base = None
+			print self.base
+			self.player_loose()		
+
+
 	#--------------------bonus system---------------
 	def add_bonus_to_map(self):
 		x = randint(1,24)*20
@@ -153,7 +177,10 @@ class GameManager(object):
 			elif self.is_bullet_hit_some_block(bullet) or self.is_bullet_hit_some_tank(bullet):				
 				bullet.destroy()
 				self.bullets.remove(bullet)
-
+			elif self.is_rect_hit_base(bullet.get_rect()):				
+				bullet.destroy()
+				self.bullets.remove(bullet)
+				self.destroy_base()
 			elif not bullet.isMoving:
 				bullet.move()
 			
@@ -164,8 +191,9 @@ class GameManager(object):
 				if self.is_rect_inside_map(tank.get_next_step_rect()):
 					if not self.is_tank_will_hit_some_tank(tank):
 						if not self.is_tank_will_hit_some_block(tank):
-							tank.move()
-							pass
+							if not self.is_rect_hit_base(tank.get_next_step_rect()):
+								tank.move()
+							
 						
 			
 

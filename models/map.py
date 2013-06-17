@@ -22,6 +22,7 @@ class Map(cocos.layer.Layer):
 
 		self.enemy_spawn_points = []
 		self.player_spawn_points = []
+		self.base_spawn_point = None
 		self.parse_object_layer(map_path)
 
 		
@@ -33,6 +34,8 @@ class Map(cocos.layer.Layer):
 				spawn_point = SpawnPoint(spawn_object)
 				if (spawn_point.isPLayerSpawnPoint == True):
 					self.player_spawn_points.append(spawn_point)
+				elif (spawn_point.isBaseSpawnPoint == True):
+					self.base_spawn_point = spawn_point
 				else:
 					self.enemy_spawn_points.append(spawn_point)
 
@@ -115,7 +118,8 @@ class SpawnPoint(object):
 	def __init__(self, node):
 		super(SpawnPoint, self).__init__()
 
-		self.isPLayerSpawnPoint = (node.get('name') == 'spawn_player_point')					
+		self.isPLayerSpawnPoint = (node.get('name') == 'spawn_player_point')
+		self.isBaseSpawnPoint = (node.get('name') == 'spawn_base')
 		self.x = int(node.get('x'))
 		self.y = 520 - int(node.get('y'))
 		self.position = self.x,self.y
