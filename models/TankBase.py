@@ -125,7 +125,10 @@ class TankBase(cocos.sprite.Sprite):
 
     def shoot(self,obj = 1): #tank shoots        
         #self.soundManager.playShoot()
-        bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
+        if not self.isEnemy:
+            bullet = Bullet("resources/bullets/player_bullet.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
+        else:
+            bullet = Bullet("resources/bullets/enemy_bullet.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):
                 observer.tankShoot(bullet)
