@@ -43,7 +43,7 @@ class TankBase(cocos.sprite.Sprite):
         elif self.power == 3:
             self.direction = -1
             self.bullet_power = 1
-            self.path = "resources/tanks/tank_player.png"
+            self.path = "resources/tanks/neon_tank_player.png"            
         elif self.power == 4:
             self.bullet_power = 2
             self.direction = -1
@@ -53,6 +53,7 @@ class TankBase(cocos.sprite.Sprite):
         # self.path = "resources/tanks/tank_test.png"
 
         super(TankBase,self).__init__(self.path,position=(self.x,self.y))
+        self.add_shadow()
 
         self.defineSpeed()
 
@@ -60,6 +61,12 @@ class TankBase(cocos.sprite.Sprite):
             # for enemy tanks
             self.schedule_interval(self.AI_movement,3) #change direction every 1.5 sec
             self.schedule_interval(self.shoot,2) # shoots every 2 seconds
+
+    def add_shadow(self):
+        if self.power == 3:
+            shadow_path = "resources/tanks/shadow_for_neon_tank_player.png"
+            shadow = cocos.sprite.Sprite(shadow_path)
+            self.add(shadow,z = -1)
 
     def attach(self,observer): #attach observer
         self.observers.append(observer)
