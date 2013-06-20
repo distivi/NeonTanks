@@ -15,7 +15,7 @@ class MenuScreen(BaseScreen):
 		
 
 	def create_layer(self):		
-		label =	cocos.sprite.Sprite("resources/fon/12.png", position = (self.win_width / 2, self.win_height / 2))
+		label =	cocos.sprite.Sprite("resources/background/12.png", position = (self.win_width / 2, self.win_height / 2))
 		self.add(label,z=0)
 
 	def create_menu(self):

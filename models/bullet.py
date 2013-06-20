@@ -40,6 +40,7 @@ class Bullet(cocos.sprite.Sprite):
 
     def move(self):
         self.isMoving = True
+        self.rotation = 1+20;
         moveAction = cocos.actions.MoveBy(self.move_posistion, duration = self.speed)
         repeatMoving = cocos.actions.Repeat(moveAction)  
 
