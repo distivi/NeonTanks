@@ -13,7 +13,19 @@ class Map(cocos.layer.Layer):
 		bg_layer.set_view(0, 0, 520, 520)
 		self.add(bg_layer)
 
-		self.block_layer = resources_from_tmx['test_map']
+		bg_layer = resources_from_tmx['green_shadows']		
+		bg_layer.set_view(0, 0, 520, 520)
+		self.add(bg_layer)
+
+		bg_layer = resources_from_tmx['red_shadows']		
+		bg_layer.set_view(0, 0, 520, 520)
+		self.add(bg_layer)
+
+		bg_layer = resources_from_tmx['blue_shadows']		
+		bg_layer.set_view(0, 0, 520, 520)
+		self.add(bg_layer)
+
+		self.block_layer = resources_from_tmx['level_1']
 		self.block_layer.set_view(0, 0, 520, 520)
 		self.add(self.block_layer)
 
@@ -45,7 +57,8 @@ class Map(cocos.layer.Layer):
 	def parse_blocks_layer(self):
 		for rows in self.block_layer.cells:
 			for cell in rows:				
-				if cell.tile:					
+				if cell.tile:
+					print cell					
 					self.blocks.append(BaseStaticBlock(cell))
 
 	

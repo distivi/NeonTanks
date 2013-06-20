@@ -30,34 +30,97 @@
  <tileset firstgid="5" name="background_image" tilewidth="20" tileheight="20">
   <image source="background_image.png" width="520" height="520"/>
  </tileset>
+ <tileset firstgid="681" name="tile_set_green_neon" tilewidth="20" tileheight="20">
+  <image source="tile_set_green_neon.png" width="200" height="200"/>
+  <tile id="11">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="hp" value="1"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="781" name="tile_set_red_neon" tilewidth="20" tileheight="20">
+  <image source="tile_set_red_neon.png" width="80" height="80"/>
+  <tile id="5">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="hp" value="5"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="hp" value="5"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="hp" value="5"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="can move bullet" value="False"/>
+    <property name="hp" value="5"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="797" name="tile_set_water" tilewidth="20" tileheight="20">
+  <image source="tile_set_water.png" width="120" height="80"/>
+  <tile id="7">
+   <properties>
+    <property name="can move bullet" value="True"/>
+    <property name="hp" value="0"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="can move bullet" value="True"/>
+    <property name="hp" value="0"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="can move bullet" value="True"/>
+    <property name="hp" value="0"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="can move bullet" value="True"/>
+    <property name="hp" value="0"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="bg" width="26" height="26">
   <data encoding="base64" compression="zlib">
    eJwN0wOSIAYAAMHN2bZt27Zt27Zt27Zt27aSs22nq6afMEEDAgKCEZwQhCQUoQlDWMIRnghEJBKRiUJUohGdGMQkFrGJQ1ziEZ8EJCQRiUlCUpKRnBSkJBWpSUNa0pGeDGQkE5nJQlaykZ0c5CQXuclDXvKRnwIUpBCFKUJRilGcEpSkFKUpQ1nKUZ4KVKQSlalCVapRnRrUpBa1qUNd6lGfBjSkEY1pQlOa0ZwWtKQVrWlDW9rRng50pBOd6UJXutGdHvSkF73pQ1/60Z8BDGQQgxnCUIYxnBGMZBSjGcNYxjGeCUxkEpOZwlSmMZ0ZzGQWs5nDXOYxnwUsZBGLWcJSlrGcFaxkFatZw1rWsZ4NbGQTm9nCVraxnR3sZBe72cNe9rGfAxzkEIc5wlGOcZwTnOQUpznDWc5xngtc5BKXucJVrnGdG9zkFre5w13u8S//cZ8HPOQRj3nCU57xnBe85BWvecNb3vGeD3zkE5/5wle+8Z0f/OQXv/nDXwL+EYEITBCCEozghCAkoQhNGMISjvBEICKRiEwUohKN6MQgJrGITRziEo/4JCAhiUhMEpKSjOSkICWpSE0a0pKO9GQgI5nITBayko3s5CAnuchNHvKSj/wUoCCFKEwRilKM4pSgJKUoTRnKUo7yVKAilahMFapSjerUoCa1qE0d6lKP+jSgIY1oTBOa0ozmtKAlrWhNG9rSjvZ0oCOd6EwXutKN7vSgJ73oTR/60o/+DGAggxjMEIYyjOGMYCSjGM0YxjKO8UxgIpOYzBSmMo3pzGAms5jNHOYyj/ksYCGLWMwSlrKM5axgJatYzRrWso71bGAjm9jMFrayje3sYCe72M0e9rKP/RzgIIc4zBGOcozjnOAkpzjNGc5yjvNc4CKXuMwVrnKN69zgJre4zR3uco9/+Y/7POAhj3jME57yjOe84CWveM0b3vKO93zgI5/4zBe+8o3v/OAnv/jNH/4SEMj/BCIwQQhKMIITgpCEIjRhCEs4whOBiEQiMlGISjSiE4OYxCI2cYhLPOKTgIQkIjFJSEoykpOClKQiNWlISzrSk4GMZCIzWchKNrKTg5zkIjd5yEs+8lOAghSiMEUoSjGKU4KSlKI0ZShLOcpTgYpUojJVqEo1qlODmtSiNnWoSz3q04CGNKIxTWhKM5rTgpa0ojVtaEs72tOBjnSiM13oSje604Oe9KI3fehLP/ozgIEMYjBDGMowhjOCkYxiNGMYyzjGM4GJTGIyU5jKNKYzg5nMYjZzmMs85rOAhSxiMUtYyjKWs4L/ASsqOMw=
   </data>
  </layer>
- <layer name="test_map" width="26" height="26">
+ <layer name="test_map" width="26" height="26" visible="0">
   <data encoding="base64" compression="zlib">
    eJztVUEOgCAMQ/n/n714WJZ2VNgSJTbpQSztgnO09i6cZI2ReXRDtrc7/sCwZ3bcjL6J11oibyV/5X2GJuq37BwFWbUoHhk+alb2PtR3qDeV2VJxDmgeRf/QyGuljgrtzjmoT1hPoVmIdOzeqqj/KXbM8VnKvTabFT2P9LP4Ws4FqzMA/g==
   </data>
  </layer>
- <layer name="level_01" width="26" height="26" visible="0">
+ <layer name="level_1" width="26" height="26">
   <data encoding="base64" compression="zlib">
-   eJztklEKwDAIQ7W7/533s4GUmLmhsrIF8hNtXikVwRpOnq2fw7vmvmGshyNS8ferObY/i4MU5WT022w1DjuH8goO29+Ao/92nrPZGzlMXZyrO3RxMp0lBfZ2qtXFeaKV36DjH52cO/kXODtK4gEm
+   eJxjYBgFQxFsYYJgWqkf6vYIMTMwCDNj0tQ2TwyIxbHQ5NpDqnnk2kMtQGt70M1H56sAw0aVGUHTyh4toNnazAia2uYTG44wdbjU08secgEhc6kdn7jsoTQ+RwF1AaG0hh6fuDApevGpJeROcvxALXtIAUPNHgD/a0ex
   </data>
  </layer>
- <layer name="level_02" width="26" height="26" visible="0">
+ <layer name="green_shadows" width="26" height="26">
   <data encoding="base64" compression="zlib">
-   eJztlDEKACAIAK3+/+emoCFN6wgCD1xCvQpUJElEihFkv4SlHUSECoXXccIvHq1ulRe555gry2v1887la8/c0zonPGS9Jy+yD+k8ul7bLzd7R/Ps9gzp0SA84088HuJNOw/FracDfhABAQ==
+   eJztlFEKgDAIhof3v0j1GD1Wdwi6R9AFKkhYNrWZQUQfCK1cv7bfQvjxooAQyj0q8M9H6ii3ubAvN/8tOtz3seq0a263R3/hfVy+FWvdb9PBc5mjd08GH2vEfQzr9ejcF9eHpS/0qeZX2sfdvhpGZ7uvrZECzvVLOnQutHWqPqSDY3jP2ZO0cK7/a3Ce3kj5hgttbwydgZzzzNkr5Q6Js5XmlOpIntb+z9Jz6jmJOzo5eOosonRycg==
   </data>
  </layer>
- <layer name="level_03" width="26" height="26" visible="0">
+ <layer name="red_shadows" width="26" height="26">
   <data encoding="base64" compression="zlib">
-   eJzt1eEKgCAMBOCZ7//O/Y3jdLcl0awDkWT6hcQy+5NJu4yKTjN+9gF1o2ecZ/VZB4fyXhilbqUzux/mKPve6GTnqg6e48Xb14P1X3G8oOMl2zsjDva3iKc6rF9XddCIOOy/MPq27jrK2pMO83ZzTvLbASU=
+   eJxjYBgFo4B+gJ+ZgYGPGZUGYQFm0s3ihZqBbh4fHrNEyLBHkAw9EmToEcWjRxooJ8WMSoOwDBn2SELNQDdPigyzRsEoGAWjYBSMAmoAACYTAvE=
   </data>
  </layer>
- <layer name="level_04" width="26" height="26" visible="0">
+ <layer name="blue_shadows" width="26" height="26">
   <data encoding="base64" compression="zlib">
-   eJztlEEOwCAIBBX+/+de4EIoAoKJTTfZi+KORnGMXyeF5G5BkjPJnny25HgyPDVI+czr4DAjwgGxxiNZ77mfXUY1xzp3F8dyhCPvEBfW8t/egVWzUoQDRk0FJ6qpGApyuzmRntrJuokT6Svtj8n0aXaP3vEbOJm5L3MeaacBBg==
+   eJxjYBgFo2AUjALqAVlmBgY5IJZHohWYqW+PMhYz1WhgjyYWM3VoYI8+0EwDIDZEoo1oYA+pYDQ+yQODNT5HwSgYrAAAXngFUQ==
   </data>
  </layer>
  <objectgroup name="spawn_points" width="26" height="26">
