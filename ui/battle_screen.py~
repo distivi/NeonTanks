@@ -2,7 +2,7 @@
 
 import cocos
 from base_screen import BaseScreen
-from game_menu import *
+from game_menu import GameMenu
 from main_menu import *
 from models.static_block import *
 from models.brick_block import *
@@ -19,6 +19,7 @@ class BattleScreen(HandlerKey):
 		self.info_enemeis()
 		self.info_panzer()
 		self.button_menu()
+
 		self.init_game()		
 		self.schedule_interval(self.update, 0.01) 
 
@@ -27,7 +28,7 @@ class BattleScreen(HandlerKey):
 		self.update_tank_position()
 		self.game_manager.update()
 		self.game_manager.updateSpawnTanks()
-		self.game_manager.updateBonus()
+		self.bonus.updateBonus()
 		
 
 	def create_layer(self):		
@@ -51,13 +52,13 @@ class BattleScreen(HandlerKey):
 				tank_direction = 3
 
 			elif RIGHT in self.chars_pressed:			
-				tank_direction = 1
+				tank_direction = 2
 
 			elif UP in self.chars_pressed:			
 				tank_direction = 0
 
 			elif DOWN in self.chars_pressed:			
-				tank_direction = 2
+				tank_direction = 1
 
 			self.game_manager.player_tank.user_select_direction(tank_direction)
 			
@@ -141,18 +142,20 @@ class BattleScreen(HandlerKey):
 
 	def button_menu(self):
 		button = []
-		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_game_menu))
+		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_main_menu))
 		menu = cocos.menu.Menu()
 		menu.create_menu(button)
 		menu.position = -self.win_width / 2.5, self.win_height / 2.5
 		self.add(menu)
 
-	def go_to_game_menu(self):		
-		self.unschedule(self.update)
-		self.game_menu = GameMenu()
-		self.game_menu.attach(self)
-		self.add(self.game_menu, z = 1)
-
+	def go_to_main_menu(self):		
+		#game_menu_scene = cocos.scene.Scene(GameMenu())
+		#self.add(game_menu_scene)
+		gameMenu = cocos.scene.Scene(GameMenu())
+		cocos.director.director.push(gameMenu)
+		#cocos.director.director.init()
+		#cocos.director.director.run(cocos.scene.Scene(GameMenu()))
+		#self.menu = MenuScreen()
 
 
 	#######################################################
@@ -168,37 +171,6 @@ class BattleScreen(HandlerKey):
 		self.labelFast.setText(  "Fast:     " + info["fast_tanks_count"].__str__())
 		self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
 		
-	def resume_game_menu(self):
-		self.remove(self.game_menu)
-		self.schedule_interval(self.update, 0.01)
 		
-'''		
-<<<<<<< HEAD
-	def create_menu(self):
-		menu_list = []
-		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
-		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
-		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
-		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
-		self.menu = cocos.menu.Menu()
-		self.menu.create_menu(menu_list);
-		self.menu.position = 0, 0
-		self.add(self.menu)
-
-	def on_continue(self):
-		self.remove(self.menu)
-
-	def on_load(self):
-		print "on_load"
-
-	def on_pouse(self):
-		print "pouse"
 		
-	def on_save(self):
-		print "on_save"		
 
-	def on_quit(self):
-		print "quit"
-=======
->>>>>>> 53321e4ca4f63e78857907e31e133dde26f4510a
-'''

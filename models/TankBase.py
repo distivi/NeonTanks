@@ -6,7 +6,7 @@ import pyglet
 from random import randint
 import xml.etree.ElementTree as ET
 from models.bullet import Bullet
-from managers.sound_manager import SoundManager
+#from managers.sound_manager import SoundManager
 
 # TankBase - base class for all tanks 
 
@@ -24,9 +24,10 @@ class TankBase(cocos.sprite.Sprite):
         self.power = power # tanks power level
         self.bullet_power = 0
         self.direction = 0        
-        self.setDirection(0)        
-        self.soundManager = SoundManager(0)
+        self.setDirection(0)
         self.moving_animation = None
+        #self.soundManager = SoundManager(0)
+
 
         #load texture
 
@@ -43,6 +44,10 @@ class TankBase(cocos.sprite.Sprite):
             self.direction = -1
             self.bullet_power = 1
             self.path = "resources/tanks/tank_player.png"
+        elif self.power == 4:
+            self.bullet_power = 2
+            self.direction = -1
+            self.path = "resources/tanks/tank_player_heavy.png"
 
         # WARNING: only for test
         # self.path = "resources/tanks/tank_test.png"
@@ -51,7 +56,7 @@ class TankBase(cocos.sprite.Sprite):
 
         self.defineSpeed()
 
-        if self.power != 3:
+        if self.power != 3 and self.power != 4:
             # for enemy tanks
             self.schedule_interval(self.AI_movement,3) #change direction every 1.5 sec
             self.schedule_interval(self.shoot,2) # shoots every 2 seconds
@@ -107,7 +112,7 @@ class TankBase(cocos.sprite.Sprite):
         
 
     def shoot(self,obj = 1): #tank shoots        
-        self.soundManager.playShoot()
+        #self.soundManager.playShoot()
         bullet = Bullet("resources/bullets/bullet1.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
         for observer in self.observers:
             if hasattr(observer,'tankShoot'):
@@ -192,3 +197,17 @@ class TankBase(cocos.sprite.Sprite):
             self.speed = 0.2
         else: # heavy tank
             self.speed = 0.2
+
+    def slowDown(self,koef=0.5): # define speed after slow down bonus got(only for enemy tanks
+        self.speed = self.speed/koef
+
+    def got_bonus(self): # WARNING Only for enemy tanks
+        self.path = "resources/tanks/tank_heavy.png"
+
+    # Testing zone
+    def setPath(self, path):
+        self.path = path
+        #super(TankBase,self).__init__(self.path,position=(self.x,self.y)) 
+
+    def getPath(self):
+        return self.path
