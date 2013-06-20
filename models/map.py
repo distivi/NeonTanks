@@ -121,5 +121,5 @@ class SpawnPoint(object):
 		self.isPLayerSpawnPoint = (node.get('name') == 'spawn_player_point')
 		self.isBaseSpawnPoint = (node.get('name') == 'spawn_base')
 		self.x = int(node.get('x'))
-		self.y = 520 - int(node.get('y'))
+		self.y = 520 - int(node.get('y'))		
 		self.position = self.x,self.y
