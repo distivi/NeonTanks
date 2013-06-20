@@ -35,7 +35,7 @@ class TankBase(cocos.sprite.Sprite):
             self.path = "resources/tanks/tank_standart.png"
             self.bullet_power = 1
         elif self.power == 1:
-            self.path = "resources/tanks/tank_fast.png"
+            self.path = "resources/tanks/neon_tank_speed.png"
             self.bullet_power = 1
         elif self.power == 2:
             self.path = "resources/tanks/tank_heavy.png"
@@ -63,8 +63,13 @@ class TankBase(cocos.sprite.Sprite):
             self.schedule_interval(self.shoot,2) # shoots every 2 seconds
 
     def add_shadow(self):
+        shadow_path = None
+        
         if self.power == 3:
             shadow_path = "resources/tanks/shadow_for_neon_tank_player.png"
+        elif self.power == 1:
+            shadow_path = "resources/tanks/shadow_for_neon_speed_tank.png"
+        if shadow_path:
             shadow = cocos.sprite.Sprite(shadow_path)
             self.add(shadow,z = -1)
 
