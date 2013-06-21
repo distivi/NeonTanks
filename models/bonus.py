@@ -37,7 +37,7 @@ class Bonus(cocos.sprite.Sprite):
         root.attrib = {'position':str(self.position),'type':str(self.bonusType)}
         return root
 
-    def destroy(self,obj):
+    def destroy(self,obj=1):
         #if self.timeout <= 0:
         self.kill()
         print "Bonus removed"
@@ -59,7 +59,7 @@ class Bonus(cocos.sprite.Sprite):
         self.timeout = 100
 
     def tank_took_it(self):
-        self.destroy(1)
+        self.destroy()
         print "Bonus destroyed"
         for observer in self.observers:
             if hasattr(observer,"removeBonus"):

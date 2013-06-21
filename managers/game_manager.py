@@ -188,7 +188,7 @@ class GameManager(object):
 				tank.destroy()
 	def upgrade_tank(self):
 		if self.player_tank.getPower() == 3:
-			#self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
+			self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
 			for tank in self.tanks:
 				if not tank.isEnemy:
 					self.tanks.remove(tank)
