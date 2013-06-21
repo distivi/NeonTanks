@@ -9,14 +9,9 @@ from ui.tank_crash_screen import TankCrashScreen
 
 class MenuScreen(BaseScreen):	
 	def __init__(self):
-		super(MenuScreen, self).__init__()		
-		self.create_layer()
+		super(MenuScreen, self).__init__(bg_image = "resources/background/background_image_main_menu.png")		
 		self.create_menu()
 		
-
-	def create_layer(self):		
-		label =	cocos.sprite.Sprite("resources/background/12.png", position = (self.win_width / 2, self.win_height / 2))
-		self.add(label,z=0)
 
 	def create_menu(self):
 		menu_list = []
