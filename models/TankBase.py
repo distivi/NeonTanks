@@ -32,13 +32,13 @@ class TankBase(cocos.sprite.Sprite):
         #load texture
 
         if self.power == 0:
-            self.path = "resources/tanks/tank_standart.png"
+            self.path = "resources/tanks/neon_tank_standart.png"
             self.bullet_power = 1
         elif self.power == 1:
             self.path = "resources/tanks/neon_tank_speed.png"
             self.bullet_power = 1
         elif self.power == 2:
-            self.path = "resources/tanks/tank_heavy.png"
+            self.path = "resources/tanks/neon_tank_heavy.png"
             self.bullet_power = 2
         elif self.power == 3:
             self.direction = -1
@@ -47,7 +47,7 @@ class TankBase(cocos.sprite.Sprite):
         elif self.power == 4:
             self.bullet_power = 2
             self.direction = -1
-            self.path = "resources/tanks/tank_player_heavy.png"
+            self.path = "resources/tanks/neon_tank_player_heavy.png"
 
         # WARNING: only for test
         # self.path = "resources/tanks/tank_test.png"
@@ -65,10 +65,17 @@ class TankBase(cocos.sprite.Sprite):
     def add_shadow(self):
         shadow_path = None
         
-        if self.power == 3:
-            shadow_path = "resources/tanks/shadow_for_neon_tank_player.png"
+        if self.power == 0:
+            shadow_path = "resources/tanks/shadow_for_neon_tank_standart.png"        
         elif self.power == 1:
             shadow_path = "resources/tanks/shadow_for_neon_speed_tank.png"
+        elif self.power == 2:
+            shadow_path = "resources/tanks/shadow_for_neon_heavy_tank.png"
+        elif self.power == 3:
+            shadow_path = "resources/tanks/shadow_for_neon_tank_player.png"
+        elif self.power == 4:
+            shadow_path = "resources/tanks/shadow_for_neon_tank_player_heavy.png"
+
         if shadow_path:
             shadow = cocos.sprite.Sprite(shadow_path)
             self.add(shadow,z = -1)
