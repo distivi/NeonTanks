@@ -9,7 +9,7 @@ from handler_key import *
 
 class GameMenu(cocos.sprite.Sprite):
 	def __init__(self, position = (400, 325)):
-		super(GameMenu, self).__init__("resources/fon/menu_background.jpg", position)
+		super(GameMenu, self).__init__("resources/background/menu_background.jpg", position)
 		self.observers = []
 		self.menu = cocos.menu.Menu()
 		self.create_menu()
