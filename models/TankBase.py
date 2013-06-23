@@ -17,14 +17,15 @@ class TankBase(cocos.sprite.Sprite):
         self.x,self.y = position #base object position
         self.isMoving = False
         self.isRotating = False
-        self.isNeedRotateAfterMoving = False
+        self.isNeedRotateBeforeMoving = False
         self.hp = 5 # tank's health
         self.isEnemy = isEnemy # is tank anemy
         self.path = "" #path to sprite
         self.power = power # tanks power level
+        self.direction = 0
         self.bullet_power = 0
-        self.direction = 0        
         self.setDirection(0)
+        self.bullet_direction = 0
         self.moving_animation = None
         #self.soundManager = SoundManager(0)
 
@@ -62,6 +63,7 @@ class TankBase(cocos.sprite.Sprite):
             self.schedule_interval(self.AI_movement,3) #change direction every 1.5 sec
             self.schedule_interval(self.shoot,2) # shoots every 2 seconds
 
+
     def add_shadow(self):
         shadow_path = None
         
@@ -91,13 +93,16 @@ class TankBase(cocos.sprite.Sprite):
         self.setDirection(direction)
 
     def move(self): #move object        
+        if self.direction == -1 or self.isRotating: # stand or rotating
+            return
+
+        if self.isNeedRotateBeforeMoving:
+            self.rotate_tank()
+            
         tank_length = 10
         distance = 20
         pos = 0,0
         angle = 0
-
-        if self.direction == -1: # stand
-            return
 
         angle = self.direction * 90
         isTankMoveByY = (self.direction % 2 == 0)
@@ -110,12 +115,10 @@ class TankBase(cocos.sprite.Sprite):
             pos = distance * pluxMinusDirection, 0
             
         startMoving = cocos.actions.CallFunc(self.setMoving, True)
-        rotate_duration = 0 if angle == self.rotation else 0.2
-        rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
         moveTank = cocos.actions.MoveBy(pos, duration = self.speed)
         endMoving = cocos.actions.CallFunc(self.setMoving, False)
         
-        self.moving_animation = startMoving + rotateTank + moveTank + endMoving
+        self.moving_animation = startMoving + moveTank + endMoving
 
         self.do(self.moving_animation)
 
@@ -123,15 +126,24 @@ class TankBase(cocos.sprite.Sprite):
         if self.direction == -1:
             return
 
+        self.isNeedRotateBeforeMoving = False
+
         angle = self.direction * 90        
         rotate_duration = 0 if angle == self.rotation else 0.2
+
+        begin_animation = cocos.actions.CallFunc(self.setRotating, True)
         rotateTank = cocos.actions.RotateTo(angle, duration = rotate_duration)
-        self.do(rotateTank)
+        end_animation = cocos.actions.CallFunc(self.setRotating, False)
+        rotate_animation = begin_animation + rotateTank + end_animation
+        self.do(rotate_animation)
 
         
 
     def shoot(self,obj = 1): #tank shoots        
         #self.soundManager.playShoot()
+        if self.isRotating:
+            return
+
         if not self.isEnemy:
             bullet = Bullet("resources/bullets/player_bullet.png",self.position,self.bullet_direction,self.isEnemy,self.bullet_power)        
         else:
@@ -191,13 +203,14 @@ class TankBase(cocos.sprite.Sprite):
         return self.direction
 
     def setDirection(self,direction): #set tank direction     
-        self.direction = direction
-
-        if not self.isMoving:           
-            if direction != -1:
-                self.bullet_direction = direction            
-        # else:
-        #     self.rotate_tank()
+        if self.direction != direction:            
+            self.direction = direction
+            if not self.isMoving:
+                self.rotate_tank()
+            else:
+                self.isNeedRotateBeforeMoving = True 
+            if self.direction != -1:
+                self.bullet_direction = self.direction
 
         
     def setMoving(self,isMoving = False):        
@@ -206,7 +219,7 @@ class TankBase(cocos.sprite.Sprite):
 
     def setRotating(self,isRotating = False):
         self.isRotating = isRotating
-
+        
     def getXmlWithParrentNode(self,root):
         tankNode = ET.SubElement(root,'tank')		
         tankNode.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}

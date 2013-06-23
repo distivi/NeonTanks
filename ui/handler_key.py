@@ -19,12 +19,12 @@ class HandlerKey(BaseScreen):
         super( HandlerKey, self).__init__()
         self.chars_pressed = set()
         self.direction = 'none'
-        self.text = cocos.text.Label("Test class HandlerKey", x=100,y=100)
-        self.add(self.text)
+        # self.text = cocos.text.Label("Test class HandlerKey", x=100,y=100)
+        # self.add(self.text)
 
     def on_key_press(self, key, modifiers):
        self.chars_pressed.add(key)       
-       self.text.element.text = pyglet.window.key.symbol_string(key)
+       # self.text.element.text = pyglet.window.key.symbol_string(key)
         
     def on_key_release(self, key, modifiers):
        self.chars_pressed.remove(key)

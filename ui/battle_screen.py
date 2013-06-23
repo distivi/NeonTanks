@@ -38,6 +38,11 @@ class BattleScreen(HandlerKey):
 		label.position = self.win_width / 2, self.win_height - 20
 		self.add(label)
 
+		map_border = cocos.sprite.Sprite('resources/background/map_border.png')
+		map_border.position = self.win_width / 2, self.win_height / 2
+		self.add(map_border)
+
+
 	def init_game(self):
 		self.game_manager = GameManager(1)
 		self.game_manager.attach(self)
