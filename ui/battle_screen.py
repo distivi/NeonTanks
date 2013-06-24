@@ -146,7 +146,7 @@ class BattleScreen(HandlerKey):
 
 	def button_menu(self):
 		button = []
-		button.append(cocos.menu.ImageMenuItem("resources/buttons/temp_btn.jpg", self.go_to_game_menu))
+		button.append(cocos.menu.ImageMenuItem("resources/buttons/back_button.png", self.go_to_game_menu))
 		menu = cocos.menu.Menu()
 		menu.create_menu(button)
 		menu.position = -self.win_width / 2.5, self.win_height / 2.5
