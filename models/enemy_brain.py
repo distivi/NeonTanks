@@ -108,16 +108,16 @@ class EnemyBrain(object):
 
 	
 	def get_direction_for_tank(self, tank):
+		way = self.find_shortest_way_for_tank(tank)
+
+	def find_shortest_way_for_tank(self,tank):
 		print tank.position
 		min_position = self.get_nearest_position_for_tank(tank)
 		print "min dist ",min_position.x,';',min_position.y
 		if min_position.equal(self.player_tank_position):
 			print "nearest is tank"
 		else:
-			print "nearest is base"
-		# print "Enemy tank position ",tank.position
-		# print "Player tank position ",self.player_tank_position
-		# print "PLayer base position ",self.player_base_position
+			print "nearest is base"		
 		pass
 
 	####################################################
