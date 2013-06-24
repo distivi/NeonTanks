@@ -80,7 +80,7 @@ class BattleScreen(HandlerKey):
 		hardEnemy = 2  #will be count
 		width = self.win_width
 		height = self.win_height
-		indentSpriteWidth = self.win_width - 120
+		indentSpriteWidth = self.win_width - 80
 		indentSpriteHeight = self.win_height - 60
 		indentLabelWidth = 100
 		indentLabelHeight = 20
@@ -94,39 +94,39 @@ class BattleScreen(HandlerKey):
 		self.add(labelEnemy)
 
 		#info easy panzers
-		spriteEasy = cocos.sprite.Sprite("resources/tanks/tank_fast.png")
+		spriteEasy = cocos.sprite.Sprite("resources/tanks/neon_tank_speed.png")
 		spriteEasy.position = indentSpriteWidth, indentSpriteHeight
-		self.labelFast = cocos.text.Label(("Fast: " + easyEnemy.__str__()), 
+		self.labelFast = cocos.text.Label((" " + easyEnemy.__str__()), 
 			font_size = 11,
 			anchor_x = 'left',
 			anchor_y = 'top',)
-		self.labelFast.position = width - indentLabelWidth , height - indentLabelHeight  
+		self.labelFast.position = width - (indentLabelWidth - 40) , height - indentLabelHeight  
 		indentLabelHeight += 50
 		indentSpriteHeight -= 50
 		self.add(self.labelFast)
 		self.add(spriteEasy)
 
 		#info normal panzers
-		spriteNormal = cocos.sprite.Sprite("resources/tanks/tank_standart.png")
+		spriteNormal = cocos.sprite.Sprite("resources/tanks/neon_tank_standart.png")
 		spriteNormal.position = indentSpriteWidth, indentSpriteHeight 		
-		self.labelNormal = cocos.text.Label(("Normal: " + normalEnemy.__str__()), 
+		self.labelNormal = cocos.text.Label((" " + normalEnemy.__str__()), 
 			font_size = 11,
 			anchor_x = 'left',
 			anchor_y = 'top',)
-		self.labelNormal.position = width - indentLabelWidth , height - indentLabelHeight
+		self.labelNormal.position = width - (indentLabelWidth - 40) , height - indentLabelHeight
 		indentLabelHeight += 50
 		indentSpriteHeight -= 50
 		self.add(self.labelNormal)
 		self.add(spriteNormal)
 
 		#info hard panzers
-		spriteHard = cocos.sprite.Sprite("resources/tanks/tank_heavy.png")
+		spriteHard = cocos.sprite.Sprite("resources/tanks/neon_tank_heavy.png")
 		spriteHard.position = indentSpriteWidth, indentSpriteHeight 		
-		self.labelHard = cocos.text.Label(("Hard: " + hardEnemy.__str__()), 
+		self.labelHard = cocos.text.Label((" " + hardEnemy.__str__()), 
 			font_size = 11,
 			anchor_x = "left",
 			anchor_y = "top",)
-		self.labelHard.position = width - 100 , height - indentLabelHeight
+		self.labelHard.position = width - (indentLabelWidth - 40) , height - indentLabelHeight
 		indentLabelHeight += 50
 		self.add(self.labelHard)
 		self.add(spriteHard)
@@ -146,7 +146,7 @@ class BattleScreen(HandlerKey):
 
 	def button_menu(self):
 		button = []
-		button.append(cocos.menu.ImageMenuItem("resources/buttons/back_button.png", self.go_to_game_menu))
+		button.append(cocos.menu.ImageMenuItem("resources/buttons/test_menu_button.png", self.go_to_game_menu))
 		menu = cocos.menu.Menu()
 		menu.create_menu(button)
 		menu.position = -self.win_width / 2.5, self.win_height / 2.5
@@ -158,7 +158,9 @@ class BattleScreen(HandlerKey):
 		self.game_menu.attach(self)
 		self.add(self.game_menu, z = 1)
 
-
+	def resume_game_menu(self):
+		self.remove(self.game_menu)
+		self.schedule_interval(self.update, 0.01)
 
 	#######################################################
 	## Observer methods
@@ -168,42 +170,10 @@ class BattleScreen(HandlerKey):
 
 	def update_info(self, info):
 		print info
-		self.labelNormal.setText("Standart: " + info["standart_tanks_count"].__str__())
-		self.labelHard.setText(  "Hard:     " + info["heavy_tanks_count"].__str__())
-		self.labelFast.setText(  "Fast:     " + info["fast_tanks_count"].__str__())
+		self.labelNormal.setText("     " + info["standart_tanks_count"].__str__())
+		self.labelHard.setText(  "     " + info["heavy_tanks_count"].__str__())
+		self.labelFast.setText(  "     " + info["fast_tanks_count"].__str__())
 		self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
 		
-	def resume_game_menu(self):
-		self.remove(self.game_menu)
-		self.schedule_interval(self.update, 0.01)
+
 		
-'''		
-<<<<<<< HEAD
-	def create_menu(self):
-		menu_list = []
-		menu_list.append(cocos.menu.MenuItem('Continue',self.on_continue))
-		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
-		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
-		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
-		self.menu = cocos.menu.Menu()
-		self.menu.create_menu(menu_list);
-		self.menu.position = 0, 0
-		self.add(self.menu)
-
-	def on_continue(self):
-		self.remove(self.menu)
-
-	def on_load(self):
-		print "on_load"
-
-	def on_pouse(self):
-		print "pouse"
-		
-	def on_save(self):
-		print "on_save"		
-
-	def on_quit(self):
-		print "quit"
-=======
->>>>>>> 53321e4ca4f63e78857907e31e133dde26f4510a
-'''
