@@ -6,6 +6,7 @@ import pyglet
 from random import randint
 import xml.etree.ElementTree as ET
 from models.bullet import Bullet
+from models.enemy_brain import EnemyBrain
 #from managers.sound_manager import SoundManager
 
 # TankBase - base class for all tanks 
@@ -60,7 +61,7 @@ class TankBase(cocos.sprite.Sprite):
 
         if self.power != 3 and self.power != 4:
             # for enemy tanks
-            self.schedule_interval(self.AI_movement,3) #change direction every 1.5 sec
+            self.schedule_interval(self.AI_movement,0.5) #change direction every 1 sec
             self.schedule_interval(self.shoot,2) # shoots every 2 seconds
 
 
@@ -86,8 +87,13 @@ class TankBase(cocos.sprite.Sprite):
         self.observers.append(observer)
 
     def AI_movement(self,dt):
-        randDirection = randint(0,3)        
-        self.setDirection(randDirection)
+        if not self.isMoving:            
+            EnemyBrain.instance.get_direction_for_tank(self)
+            randDirection = randint(0,3)        
+            self.setDirection(randDirection)
+        else:
+            self.setDirection(-1)
+
 
     def user_select_direction(self, direction):
         self.setDirection(direction)
@@ -182,6 +188,11 @@ class TankBase(cocos.sprite.Sprite):
         for observer in self.observers:
             if hasattr(observer,'tankDestroyed'):
                 observer.tankDestroyed(self)
+
+    def say_where_i_am(self):        
+        for observer in self.observers:
+            if hasattr(observer,"tankMoved"):
+                observer.tankMoved(self)
  
 
     def getHP(self): # get tank health
@@ -209,12 +220,17 @@ class TankBase(cocos.sprite.Sprite):
                 self.rotate_tank()
             else:
                 self.isNeedRotateBeforeMoving = True 
+
             if self.direction != -1:
                 self.bullet_direction = self.direction
 
         
     def setMoving(self,isMoving = False):        
         self.isMoving = isMoving
+        if not isMoving:
+            self.say_where_i_am()
+            if self.isNeedRotateBeforeMoving:
+                self.rotate_tank()
                     
 
     def setRotating(self,isRotating = False):

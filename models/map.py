@@ -57,8 +57,7 @@ class Map(cocos.layer.Layer):
 	def parse_blocks_layer(self):
 		for rows in self.block_layer.cells:
 			for cell in rows:				
-				if cell.tile:
-					print cell					
+				if cell.tile:										
 					self.blocks.append(BaseStaticBlock(cell))
 
 	
@@ -82,6 +81,7 @@ class Map(cocos.layer.Layer):
 				if cell == block.cell:
 					return False
 		return True
+	
 
 	def isBulletCanMoveOnPosition(self, position):
 		cell = self.block_layer.get_at_pixel(position[0]+2,position[1]+2)
@@ -96,6 +96,14 @@ class Map(cocos.layer.Layer):
 		for cell in cells:
 			for block in self.blocks:				
 				if cell == block.cell:
+					return False
+		return True
+
+	def isTankPotentiallyCanMoveInRect(self, rect):
+		cells = self.block_layer.get_in_region(rect.x,rect.y,rect.topright[0],rect.topright[1])
+		for cell in cells:
+			for block in self.blocks:				
+				if cell == block.cell and block.hp != 1:
 					return False
 		return True
 

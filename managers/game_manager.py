@@ -10,6 +10,7 @@ from models.TankBase import TankBase
 from ui.winner_screen import WinnerScreen
 from ui.loser_screen import LoserScreen
 from models.bonus import Bonus
+from models.enemy_brain import EnemyBrain
 
 
 class GameManager(object):
@@ -21,7 +22,9 @@ class GameManager(object):
         #set game options
 		self.level = level	
 		self.map = Map('resources/maps/game_map.tmx')
-		
+		EnemyBrain()
+		EnemyBrain.instance.set_map(self.map)
+
 		self.count_of_available_player_tanks = 2
 		
 		self.standart_tanks_count = 1
@@ -89,6 +92,7 @@ class GameManager(object):
 		self.player_tank = TankBase(tankType,isEnemy = False)
 
 		self.player_tank.attach(self)
+		self.player_tank.attach(EnemyBrain.instance)
 
 		self.tanks.append(self.player_tank)
 
@@ -107,8 +111,12 @@ class GameManager(object):
 
 	def add_base(self):
 		self.base = cocos.sprite.Sprite('resources/base/base.png')		
-		self.base.position = self.map.base_spawn_point.position		
+		self.base.position = self.map.base_spawn_point.position
 		self.map.add(self.base)
+
+		EnemyBrain.instance.set_player_base_position(self.base.position)
+
+
 
 	#--------------------base system ---------------
 
