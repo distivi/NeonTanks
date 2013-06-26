@@ -44,6 +44,7 @@ class GameManager(object):
 	def update(self):	
 		self.move_bullets()
 		self.move_tanks()
+		self.save()
 		pass
 
 	def updateSpawnTanks(self):
@@ -154,7 +155,7 @@ class GameManager(object):
 	def add_bonus_to_map(self):
 		x = randint(1,24)*20
 		y = randint(1,24)*20
-		self.bonus = Bonus(randint(0,2),position=(x,y))
+		self.bonus = Bonus(randint(0,3),position=(x,y))
 		self.bonus.attach(self)
 		self.map.add(self.bonus, z = 5)
 		self.bonuses.append(self.bonus)
@@ -209,14 +210,18 @@ class GameManager(object):
 				tank.destroy()
 	def upgrade_tank(self):
 		if self.player_tank.getPower() == 3:
-			self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
+			#self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
 			for tank in self.tanks:
 				if not tank.isEnemy:
-					self.tanks.remove(tank)
-					position = self.player_tank.getPosition()
-					self.player_tank.destroy()
-					self.add_player_tank_to_map(4)
-					self.player_tank.setPosition(position)
+					self.player_tank.image = pyglet.resource.image("resources/tanks/neon_tank_player_heavy.png")
+					#self.tanks.remove(tank)
+					#x,y = self.player_tank.getPosition()
+					#direction = self.player_tank.getDirection()
+					#self.player_tank.destroy()
+					#self.add_player_tank_to_map(4,direction,position=(x,y))
+					#self.player_tank.setDirection(direction)
+					#self.player_tank.setPosition(position=(x,y))
+					
 		
 	############################################################
 	## Bonus system end ##
