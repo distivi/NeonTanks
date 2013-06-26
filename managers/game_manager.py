@@ -27,9 +27,9 @@ class GameManager(object):
 
 		self.count_of_available_player_tanks = 2
 		
-		self.standart_tanks_count = 1
-		self.fast_tanks_count = 1
-		self.heavy_tanks_count = 1	
+		self.standart_tanks_count = 5
+		self.fast_tanks_count = 5
+		self.heavy_tanks_count = 5	
 		self.count_of_max_enemy_tanks_on_map = 1
 
 		self.tanks = []	
@@ -37,6 +37,8 @@ class GameManager(object):
 		self.bonuses = []
 		self.add_base()
 		self.timeout = 500
+
+		self.enemy_way_nodes = []
 
 
 	def update(self):	
@@ -57,6 +59,17 @@ class GameManager(object):
 
 		if not is_player_tank_on_map:
 			self.add_player_tank_to_map()
+
+	def draw_enemy_moved_path(self, way_nodes):
+		for node in self.enemy_way_nodes:
+			node.kill()
+		self.enemy_way_nodes = []
+
+		for node in way_nodes:
+			test_node = cocos.sprite.Sprite('resources/maps/test_marker2.png')
+			test_node.position = node.position.x, node.position.y
+			self.map.add(test_node,z = 100)
+			self.enemy_way_nodes.append(test_node)
 
 
 

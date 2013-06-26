@@ -1,6 +1,8 @@
 # from models.TankBase import TankBase
 import cocos
 import copy
+import math
+from operator import attrgetter
 
 class Point(object):
 	def __init__(self, x, y):
@@ -10,6 +12,10 @@ class Point(object):
 
 	def equal(self, point):
 		return True if self.x == point.x and self.y == point.y else False
+
+	def is_near(self, point):
+		dist = self.get_distance(point)
+		return True if dist < 20 else False
 
 	def get_distance(self, point):
 		dist = ((self.x - point.x)**2 + (self.y - point.y)**2)**0.5
@@ -21,9 +27,19 @@ class WebNode(object):
 		super(WebNode, self).__init__()
 		self.position = arg['position']
 		self.neighboring_nodes = []
+		self.g = 0
+		self.h = 0
+		self.f = 0
+		self.came_from = None
 
 	def add_neighbor_node(self, node):
 		self.neighboring_nodes.append(node)
+
+	def clear_way_params(self):
+		self.g = 0
+		self.h = 0
+		self.f = 0
+		self.came_from = None
 
 class WayWeb(object):	
 	def __init__(self):
@@ -34,6 +50,16 @@ class WayWeb(object):
 	def add_node(self,web_node):
 		self.web_nodes.append(web_node)
 		self.find_neighbors_for_node(web_node)
+
+	def reset_way_info_for_all_nodes(self):
+		for node in self.web_nodes:
+			node.clear_way_params()
+
+	def get_node_in_position(self,point):
+		for node in self.web_nodes:
+			if node.position.equal(point) or node.position.is_near(point):
+				return node
+		return None
 
 	def find_neighbors_for_node(self,node):
 		position_up = copy.deepcopy(node.position)
@@ -94,10 +120,7 @@ class EnemyBrain(object):
 	def set_player_base_position(self,position):
 		self.player_base_position = Point(position[0],position[1])
 
-	def get_nearest_position_for_tank(self,tank):
-		tank_position = tank.position
-		tank_position = Point(tank_position[0],tank_position[1])
-		
+	def get_nearest_position_for_tank_position(self,tank_position):				
 		distance_to_base = tank_position.get_distance(self.player_base_position)
 		distance_to_tank = tank_position.get_distance(self.player_tank_position)		
 		min_dist = min(distance_to_base,distance_to_tank)
@@ -108,17 +131,76 @@ class EnemyBrain(object):
 
 	
 	def get_direction_for_tank(self, tank):
-		way = self.find_shortest_way_for_tank(tank)
+		way = self.find_shortest_way_for_tank(tank)	
+		return way
+
 
 	def find_shortest_way_for_tank(self,tank):
-		print tank.position
-		min_position = self.get_nearest_position_for_tank(tank)
-		print "min dist ",min_position.x,';',min_position.y
-		if min_position.equal(self.player_tank_position):
-			print "nearest is tank"
-		else:
-			print "nearest is base"		
-		pass
+		tank_position = tank.position
+		tank_position = Point(tank_position[0],tank_position[1])
+
+		min_position = self.get_nearest_position_for_tank_position(tank_position)
+		
+		start_node = self.way_web.get_node_in_position(tank_position)
+		end_node = self.way_web.get_node_in_position(min_position)
+
+		if not start_node or not end_node:
+			return None
+		
+		# implement A* algorithm
+		self.way_web.reset_way_info_for_all_nodes()
+		closedset = []
+		openset = [start_node]
+		
+		start_node.g = 0
+		start_node.h = self.heuristic_cost_estimate(start_node,end_node)
+		start_node.f = start_node.g + start_node.h
+
+		while len(openset) != 0:
+			x = min(openset,key=attrgetter('f'))
+			if x == end_node:
+				return self.reconstruct_path(start_node,end_node)
+			openset.remove(x)
+			closedset.append(x)
+
+			for y in x.neighboring_nodes:
+				if y in closedset:
+					continue
+
+				tentative_g_score = x.g + 20
+
+				if y not in openset:
+					openset.append(y)
+					tentative_is_better = True
+				else:
+					if tentative_g_score < y.g:
+						tentative_is_better = True
+					else:
+						tentative_is_better = False
+
+				if tentative_is_better:
+					y.came_from = x
+					y.g = tentative_g_score
+					y.h = self.heuristic_cost_estimate(y,end_node)
+					y.f = y.g + y.h
+
+		print "can't find optimal way"
+		return None
+		
+
+	def heuristic_cost_estimate(self,start_node,end_node):
+		offset_x = math.fabs(start_node.position.x - end_node.position.x)
+		offset_y = math.fabs(start_node.position.y - end_node.position.y)
+		return offset_x + offset_y
+
+	def reconstruct_path(self,start_node,end_node):
+		path_map = []
+		current_node = end_node
+		while  current_node != None:
+			path_map.append(current_node)
+			current_node = current_node.came_from		
+		return path_map[::-1]
+		
 
 	####################################################
 	##   TANK Observers methods

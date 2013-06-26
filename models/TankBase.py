@@ -59,10 +59,11 @@ class TankBase(cocos.sprite.Sprite):
 
         self.defineSpeed()
 
-        if self.power != 3 and self.power != 4:
+        if self.power < 3:
             # for enemy tanks
-            self.schedule_interval(self.AI_movement,0.5) #change direction every 1 sec
-            self.schedule_interval(self.shoot,2) # shoots every 2 seconds
+            self.way_nodes = []
+            self.schedule_interval(self.AI_movement,0.1) #change direction every 1 sec
+            self.schedule_interval(self.shoot,1) # shoots every 2 seconds
 
 
     def add_shadow(self):
@@ -87,12 +88,37 @@ class TankBase(cocos.sprite.Sprite):
         self.observers.append(observer)
 
     def AI_movement(self,dt):
-        if not self.isMoving:            
-            EnemyBrain.instance.get_direction_for_tank(self)
-            randDirection = randint(0,3)        
-            self.setDirection(randDirection)
+        self.way_nodes = EnemyBrain.instance.get_direction_for_tank(self)
+        
+        if self.way_nodes and len(self.way_nodes) > 1:
+            for observer in self.observers:
+                if hasattr(observer,'draw_enemy_moved_path'):
+                    observer.draw_enemy_moved_path(self.way_nodes)
+
+            self.set_AI_direction()
         else:
             self.setDirection(-1)
+ 
+
+    def set_AI_direction(self):
+        if self.way_nodes and len(self.way_nodes) > 1:
+            first_node = self.way_nodes[1]
+            new_position = first_node.position
+
+            new_direction = -1
+
+            if new_position.x > self.position[0]:
+                new_direction = 1
+            elif new_position.x < self.position[0]:
+                new_direction = 3
+            elif new_position.y > self.position[1]:
+                new_direction = 0
+            elif new_position.y < self.position[1]:
+                new_direction = 2
+
+            self.setDirection(new_direction)
+            self.way_nodes.remove(self.way_nodes[0])
+
 
 
     def user_select_direction(self, direction):
@@ -231,6 +257,8 @@ class TankBase(cocos.sprite.Sprite):
             self.say_where_i_am()
             if self.isNeedRotateBeforeMoving:
                 self.rotate_tank()
+            if self.power < 3:
+                self.set_AI_direction()
                     
 
     def setRotating(self,isRotating = False):
