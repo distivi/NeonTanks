@@ -11,23 +11,23 @@ class Map(cocos.layer.Layer):
 
 		bg_layer = resources_from_tmx['bg']		
 		bg_layer.set_view(0, 0, 520, 520)
-		self.add(bg_layer)
+		self.add(bg_layer,z = -5)
 
 		bg_layer = resources_from_tmx['green_shadows']		
 		bg_layer.set_view(0, 0, 520, 520)
-		self.add(bg_layer)
+		self.add(bg_layer,z = 5)
 
 		bg_layer = resources_from_tmx['red_shadows']		
 		bg_layer.set_view(0, 0, 520, 520)
-		self.add(bg_layer)
+		self.add(bg_layer,z = 5)
 
 		bg_layer = resources_from_tmx['blue_shadows']		
 		bg_layer.set_view(0, 0, 520, 520)
-		self.add(bg_layer)
+		self.add(bg_layer,z = 5)
 
 		self.block_layer = resources_from_tmx['level_1']
 		self.block_layer.set_view(0, 0, 520, 520)
-		self.add(self.block_layer)
+		self.add(self.block_layer, z = 10)
 
 		self.blocks = []
 		self.parse_blocks_layer()
@@ -128,8 +128,8 @@ class Map(cocos.layer.Layer):
 
 	def getXmlWithParrentNode(self,root):
 		mapNode = ET.SubElement(root,'map')		
-		for block in self.blocks:
-			block.getInfo()
+		# for block in self.blocks:
+		# 	block.getInfo()
 		#mapNode.attrib = {'power':str(self.power),'position':str(self.position),'direction':str(self.direction),'hp':str(self.hp)}
 		return mapNode
 

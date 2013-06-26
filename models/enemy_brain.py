@@ -98,8 +98,7 @@ class EnemyBrain(object):
 		self.create_way_node()
 
 
-	def create_way_node(self):
-		print self.map
+	def create_way_node(self):		
 		for x in range(25):
 			for y in range(25):
 				position = Point((x + 1)*20, (y + 1)*20) 				

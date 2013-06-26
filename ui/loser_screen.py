@@ -14,7 +14,7 @@ class LoserScreen(BaseScreen):
 		self.create_menu()
 		
 	def create_layer(self):		
-		label = cocos.text.Label("You are loser...",
+		label = cocos.text.Label("You are looser...",
 			font_size = 16,
 			anchor_x = 'center',
 			anchor_y = 'center')		

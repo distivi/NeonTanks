@@ -1,1 +1,1 @@
-<game level="1"><tank direction="-1" hp="5" position="(300.0, 240.0)" power="3" /><tank direction="0" hp="5" position="(498.8359022140503, 320.0)" power="1" /><map /></game>
+<game level="1"><tank direction="-1" hp="1" position="(60.0, 20.0)" power="3" /><tank direction="1" hp="3" position="(200.0, 20.0)" power="1" /><tank direction="2" hp="5" position="(140.0, 468.5300874710083)" power="1" /><bullet direction="2" isEnemy="True" position="(140.0, 380.0)" power="1" /><bullet direction="1" isEnemy="False" position="(120.0, 20.0)" power="1" /><map /></game>

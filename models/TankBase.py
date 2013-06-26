@@ -7,7 +7,7 @@ from random import randint
 import xml.etree.ElementTree as ET
 from models.bullet import Bullet
 from models.enemy_brain import EnemyBrain
-#from managers.sound_manager import SoundManager
+from managers.sound_manager import SoundManager
 
 # TankBase - base class for all tanks 
 
@@ -28,7 +28,7 @@ class TankBase(cocos.sprite.Sprite):
         self.setDirection(0)
         self.bullet_direction = 0
         self.moving_animation = None
-        #self.soundManager = SoundManager(0)
+        
 
 
         #load texture
@@ -91,9 +91,11 @@ class TankBase(cocos.sprite.Sprite):
         self.way_nodes = EnemyBrain.instance.get_direction_for_tank(self)
         
         if self.way_nodes and len(self.way_nodes) > 1:
+            '''
             for observer in self.observers:
                 if hasattr(observer,'draw_enemy_moved_path'):
                     observer.draw_enemy_moved_path(self.way_nodes)
+            '''
 
             self.set_AI_direction()
         else:
@@ -172,7 +174,7 @@ class TankBase(cocos.sprite.Sprite):
         
 
     def shoot(self,obj = 1): #tank shoots        
-        #self.soundManager.playShoot()
+        SoundManager(0.4).playShoot()
         if self.isRotating:
             return
 

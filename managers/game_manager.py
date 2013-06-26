@@ -17,6 +17,7 @@ class GameManager(object):
 
 	def __init__(self,level):
 		super(GameManager, self).__init__()	
+		
 		self.observers = [] # keep observers
 
         #set game options
@@ -27,10 +28,11 @@ class GameManager(object):
 
 		self.count_of_available_player_tanks = 2
 		
-		self.standart_tanks_count = 5
-		self.fast_tanks_count = 5
-		self.heavy_tanks_count = 5	
-		self.count_of_max_enemy_tanks_on_map = 1
+		self.standart_tanks_count = 3
+		self.fast_tanks_count = 3
+		self.heavy_tanks_count = 3	
+		self.count_of_max_enemy_tanks_on_map = 2
+		self.spawn_index = 0
 
 		self.tanks = []	
 		self.bullets = []	
@@ -76,8 +78,7 @@ class GameManager(object):
 
 	def add_enemy_tank_to_map(self):
 		tank_type = self.get_available_tank_type()
-		print tank_type
-		
+				
 		if tank_type == -1:
 			return
 
@@ -88,9 +89,12 @@ class GameManager(object):
 
 		count_of_spawn_point = len(self.map.enemy_spawn_points)
 
-		if count_of_spawn_point > 0:
-			randPointIndex = randint(0,count_of_spawn_point-1)
-			enemy_tank.setPosition(self.map.enemy_spawn_points[randPointIndex].position)
+		if count_of_spawn_point > 0:			
+			enemy_tank.setPosition(self.map.enemy_spawn_points[self.spawn_index].position)
+			if self.spawn_index + 1 == count_of_spawn_point:
+				self.spawn_index = 0
+			else:
+				self.spawn_index += 1
 		else:
 			enemy_tank.setPosition(20, 200)
 
@@ -139,13 +143,10 @@ class GameManager(object):
 			base_rect = self.base.get_rect()
 			return base_rect.intersect(rect)
 
-	def destroy_base(self):
-		print self.base
+	def destroy_base(self):		
 		if self.base:
-			self.base.kill()
-			print self.base
-			self.base = None
-			print self.base
+			self.base.kill()			
+			self.base = None			
 			self.player_loose()		
 
 
@@ -159,22 +160,22 @@ class GameManager(object):
 		self.bonus.attach(self)
 		self.map.add(self.bonus, z = 5)
 		self.bonuses.append(self.bonus)
-		print "Bonus added"
-		
+				
 	
 	def check_if_bonus_need(self):
-		if len(self.bonuses) == 0:
-			print "Bonus needed"
+		if len(self.bonuses) == 0:			
 			self.add_bonus_to_map()
 
 	def check_if_tank_get_bonus(self):
-		tank_rect = self.player_tank.get_rect()
-		for bonus in self.bonuses:
-			bonus_rect = bonus.get_rect()
-			if tank_rect.intersects(bonus_rect):
-				bonus.tank_took_it()
-				self.reward(bonus.get_bonus_type())				
-				print "Tank got bonus"
+		is_player_tank_on_map = hasattr(self,'player_tank')
+		if is_player_tank_on_map:
+			tank_rect = self.player_tank.get_rect()
+			for bonus in self.bonuses:
+				bonus_rect = bonus.get_rect()
+				if tank_rect.intersects(bonus_rect):
+					bonus.tank_took_it()
+					self.reward(bonus.get_bonus_type())				
+				
 
 
 	def updateBonus(self):
@@ -189,10 +190,8 @@ class GameManager(object):
 			self.bonuses.remove(bonus)
 	
 	def reward(self,bonusType):
-		print "Rewarded"
 		if bonusType == 0: # make tank more powerfull
-			self.upgrade_tank()
-			print "Got star"
+			self.upgrade_tank()			
 		elif bonusType == 1: # slow down enemy tank
 			self.slow_down_all_enemy_tanks()
 		else: # destroy all enemy tanks
@@ -208,6 +207,7 @@ class GameManager(object):
 			if tank.isEnemy:
 				self.tankDestroyed(tank)
 				tank.destroy()
+
 	def upgrade_tank(self):
 		if self.player_tank.getPower() == 3:
 			#self.player_tank.setPath("resources/tanks/tank_player_heavy.png")
@@ -377,8 +377,7 @@ class GameManager(object):
 	######################################################
 	###  SAVE & LOAD
 
-	def save(self):
-		print "saving game"
+	def save(self):		
 		root = ET.Element('game')
 		root.attrib = {'level':str(self.level)}
 
@@ -433,8 +432,7 @@ class GameManager(object):
 	######################################################
 	###  GAME ENDED
 
-	def player_win(self):
-		print "player win"
+	def player_win(self):		
 		winner = cocos.scene.Scene(WinnerScreen())
 		cocos.director.director.push(winner)
 
