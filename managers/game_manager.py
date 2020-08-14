@@ -353,7 +353,7 @@ class GameManager(object):
 	##   TANK Observers methods
 
 	def __call__(self, *arg):
-	 	#print "observer call ",arg
+	 	##print"observer call ",arg
 	 	pass
 
 	def tankShoot(self,bullet):	
@@ -394,36 +394,6 @@ class GameManager(object):
 		xmlFile = open('resources/saves/test.xml','wb')
 		xmlFile.write(xmlData)
 		xmlFile.close()
-
-
-        '''
-        root = ET.Element('root')		
-			root.attrib = {'ID':'FILES_INFO'}	
-			files = self.getFilesFromResources()
-			i = 0
-			for tmpFile in files:
-				nodeFile = ET.SubElement(root,'file')
-				
-				nodeFileId = ET.SubElement(nodeFile,'id')
-				nodeFileId.text = str(i)
-
-				nodeFileName = ET.SubElement(nodeFile,'name')
-				nodeFileName.text = tmpFile.split('/')[-1]
-
-				nodeFilePath = ET.SubElement(nodeFile,'path')
-				nodeFilePath.text = tmpFile
-
-				nodeFilePath = ET.SubElement(nodeFile,'description')
-				nodeFilePath.text = "default description"
-				i += 1
-
-			xmlData = ET.tostring(root, encoding="utf-8")
-
-			xmlFile = open(self.resourcesXML,'wb')
-			xmlFile.write(xmlData)
-			xmlFile.close()
-        '''
-		
 
 	def load(self):
 		pass

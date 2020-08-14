@@ -8,10 +8,11 @@ class BaseStaticBlock(object):
 		self.hp = cell.tile.properties["hp"]
 
 	def getInfo(self):
-		print self
-		print self.cell
-		print self.cell.position
-		print self.hp
+		print(self)
+		#printself
+		#printself.cell
+		#printself.cell.position
+		#printself.hp
 
 
 

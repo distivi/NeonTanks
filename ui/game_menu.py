@@ -2,10 +2,10 @@
 
 import sys
 import cocos
-from base_screen import BaseScreen
-from battle_screen import *
+from ui.base_screen import BaseScreen
+from ui.battle_screen import *
 from managers.game_manager import GameManager
-from handler_key import *
+from ui.handler_key import *
 
 class GameMenu(cocos.sprite.Sprite):
 	def __init__(self, position = (400, 325)):
@@ -22,7 +22,7 @@ class GameMenu(cocos.sprite.Sprite):
 		menu_list.append(cocos.menu.MenuItem('Load',self.on_load))
 		menu_list.append(cocos.menu.MenuItem('Save',self.on_save))
 		menu_list.append(cocos.menu.MenuItem('Quit', self.on_quit))
-		self.menu.create_menu(menu_list);
+		self.menu.create_menu(menu_list)
 		self.menu.position = - 400, -325
 		self.add(self.menu, z = 1)
 
@@ -31,10 +31,10 @@ class GameMenu(cocos.sprite.Sprite):
 		self.resume_game()
 
 	def on_load(self):
-		print "on_load"
+		print("on_load")
 		
 	def on_save(self):
-		print "on_save"		
+		print("on_save")
 
 	def on_quit(self):
 		exit()

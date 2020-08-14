@@ -3,7 +3,7 @@
 import sys
 import cocos
 import pyglet
-from base_screen import BaseScreen
+from ui.base_screen import BaseScreen
 
 ESC = 65307
 LEFT = 65361

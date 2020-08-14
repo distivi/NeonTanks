@@ -183,7 +183,7 @@ class EnemyBrain(object):
 					y.h = self.heuristic_cost_estimate(y,end_node)
 					y.f = y.g + y.h
 
-		print "can't find optimal way"
+		#print"can't find optimal way"
 		return None
 		
 
@@ -205,7 +205,7 @@ class EnemyBrain(object):
 	##   TANK Observers methods
 
 	def __call__(self, *arg):
-	 	#print "observer call ",arg
+	 	##print"observer call ",arg
 	 	pass
 
 	def tankMoved(self,tank):		

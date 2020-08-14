@@ -27,10 +27,10 @@ class Bonus(cocos.sprite.Sprite):
         self.schedule_interval(self.destroy,6)
 
     def update(self,obj):
-        #print self.parent
+        ##printself.parent
         while self.timeout > 0:
             self.blink()
-            #print self.timeout
+            ##printself.timeout
 
     def getXml(self):
         root = ET.Element('bonus')		
@@ -40,7 +40,7 @@ class Bonus(cocos.sprite.Sprite):
     def destroy(self,obj=1):
         #if self.timeout <= 0:
         self.kill()
-        print "Bonus removed"
+        #print"Bonus removed"
             
         for observer in self.observers:
             if hasattr(observer,"removeBonus"):
@@ -60,7 +60,7 @@ class Bonus(cocos.sprite.Sprite):
 
     def tank_took_it(self):
         self.destroy()
-        print "Bonus destroyed"
+        #print"Bonus destroyed"
         for observer in self.observers:
             if hasattr(observer,"removeBonus"):
                 observer.removeBonus(self)

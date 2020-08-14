@@ -3,8 +3,8 @@
 
 import sys
 import cocos
-from base_screen import BaseScreen
-from battle_screen import *
+from ui.base_screen import BaseScreen
+from ui.battle_screen import *
 from ui.main_menu import *
 
 class LoserScreen(BaseScreen):
@@ -32,10 +32,10 @@ class LoserScreen(BaseScreen):
 		self.add(menu)
 
 	def on_continue(self):
-		print "on_continue"
+		print("on_continue")
 
 	def on_load(self):
-		print "on_load"
+		print("on_load")
 
 	def on_quit(self):
 		exit()

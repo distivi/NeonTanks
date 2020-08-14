@@ -60,7 +60,7 @@ class GameManager(object):
 
 	def add_enemy_tank_to_map(self):
 		tank_type = self.get_available_tank_type()
-		print tank_type
+		#printtank_type
 		
 		if tank_type == -1:
 			return
@@ -119,12 +119,12 @@ class GameManager(object):
 			return base_rect.intersect(rect)
 
 	def destroy_base(self):
-		print self.base
+		#printself.base
 		if self.base:
 			self.base.kill()
-			print self.base
+			#printself.base
 			self.base = None
-			print self.base
+			#printself.base
 			self.player_loose()		
 
 
@@ -138,12 +138,12 @@ class GameManager(object):
 		self.bonus.attach(self)
 		self.map.add(self.bonus, z = 5)
 		self.bonuses.append(self.bonus)
-		print "Bonus added"
+		#print"Bonus added"
 		
 	
 	def check_if_bonus_need(self):
 		if len(self.bonuses) == 0:
-			print "Bonus needed"
+			#print"Bonus needed"
 			self.add_bonus_to_map()
 
 	def check_if_tank_get_bonus(self):
@@ -153,7 +153,7 @@ class GameManager(object):
 			if tank_rect.intersects(bonus_rect):
 				bonus.tank_took_it()
 				self.reward(bonus.get_bonus_type())				
-				print "Tank got bonus"
+				#print"Tank got bonus"
 
 
 	def updateBonus(self):
@@ -168,10 +168,10 @@ class GameManager(object):
 			self.bonuses.remove(bonus)
 	
 	def reward(self,bonusType):
-		print "Rewarded"
+		#print"Rewarded"
 		if bonusType == 0: # make tank more powerfull
 			self.upgrade_tank()
-			print "Got star"
+			#print"Got star"
 		elif bonusType == 1: # slow down enemy tank
 			self.slow_down_all_enemy_tanks()
 		else: # destroy all enemy tanks
@@ -332,7 +332,7 @@ class GameManager(object):
 	##   TANK Observers methods
 
 	def __call__(self, *arg):
-	 	#print "observer call ",arg
+	 	##print"observer call ",arg
 	 	pass
 
 	def tankShoot(self,bullet):	
@@ -357,7 +357,7 @@ class GameManager(object):
 	###  SAVE & LOAD
 
 	def save(self):
-		print "saving game"
+		#print"saving game"
 		root = ET.Element('game')
 		root.attrib = {'level':str(self.level)}
 
@@ -413,7 +413,7 @@ class GameManager(object):
 	###  GAME ENDED
 
 	def player_win(self):
-		print "player win"
+		#print"player win"
 		winner = cocos.scene.Scene(WinnerScreen())
 		cocos.director.director.push(winner)
 

@@ -2,7 +2,7 @@
 
 import sys
 import cocos
-from base_screen import BaseScreen
+from ui.base_screen import BaseScreen
 from ui.battle_screen import BattleScreen
 from ui.tank_crash_screen import TankCrashScreen
 
@@ -22,14 +22,14 @@ class MenuScreen(BaseScreen):
 		menu_list.append(cocos.menu.ImageMenuItem("resources/buttons/btn_save.png",self.on_save))
 		menu_list.append(cocos.menu.ImageMenuItem("resources/buttons/btn_exit.png", self.on_quit))
 		menu = cocos.menu.Menu()
-		menu.create_menu(menu_list);
+		menu.create_menu(menu_list)
 		menu.position = 0,-91
 		self.add(menu,z=1)
 
 	def on_continue(self):
-		print "on_continue"
+		print("on_continue")
 
-	def on_new_game(self):			
+	def on_new_game(self):
 		battleScreen = cocos.scene.Scene(BattleScreen())
 		cocos.director.director.push(battleScreen)
 
@@ -38,10 +38,12 @@ class MenuScreen(BaseScreen):
 		cocos.director.director.push(testScreen)
 
 	def on_load(self):
-		print "on_load"
+		print("on_load")
+		a = 1
 		
 	def on_save(self):
-		print "on_save"		
+		print("on_save"	)
+		
 
 	def on_quit(self):
 		exit()

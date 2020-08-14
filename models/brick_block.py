@@ -1,5 +1,5 @@
 
-from static_block import BaseStaticBlock
+from models.static_block import BaseStaticBlock
 
 class BrickBlock(BaseStaticBlock):	
 	def __init__(self):

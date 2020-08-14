@@ -1,7 +1,7 @@
 import cocos
-from base_screen import BaseScreen
+from ui.base_screen import BaseScreen
 from models.TankBase import TankBase
-from handler_key import HandlerKey
+from ui.handler_key import HandlerKey
 
 ESC = 65307
 LEFT = 65361

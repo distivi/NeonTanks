@@ -65,12 +65,12 @@ class Map(cocos.layer.Layer):
 		# test method
 		if len(self.blocks) > 0:			
 			block = self.blocks[0]			
-			self.block_layer.set_cell_opacity(block.cell.position[0] / 20, block.cell.position[1] / 20, 0.5)
-		  	self.blocks.remove(block)
+			self.block_layer.set_cell_opacity(int(block.cell.position[0] / 20), int(block.cell.position[1] / 20), 0.5)
+			self.blocks.remove(block)
 
 
 	def removeBlock(self, block):
-		self.block_layer.set_cell_opacity(block.cell.position[0] / 20, block.cell.position[1] / 20, 0.5)
+		self.block_layer.set_cell_opacity(int(block.cell.position[0] / 20), int(block.cell.position[1] / 20), 0.5)
 		self.blocks.remove(block)
 		
 

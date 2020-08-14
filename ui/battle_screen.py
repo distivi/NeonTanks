@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import cocos
-from base_screen import BaseScreen
-from game_menu import *
-from main_menu import *
+from ui.base_screen import BaseScreen
+from ui.game_menu import *
+from ui.main_menu import *
 from models.static_block import *
 from models.brick_block import *
 from models.map import Map
 from managers.game_manager import GameManager
 from models.bonus import Bonus
-from handler_key import *
+from ui.handler_key import *
 
 
 class BattleScreen(HandlerKey):	
@@ -169,11 +169,11 @@ class BattleScreen(HandlerKey):
 		pass
 
 	def update_info(self, info):
-		print info
-		self.labelNormal.setText("     " + info["standart_tanks_count"].__str__())
-		self.labelHard.setText(  "     " + info["heavy_tanks_count"].__str__())
-		self.labelFast.setText(  "     " + info["fast_tanks_count"].__str__())
-		self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
+		print(info)
+		# self.labelNormal.setText("     " + info["standart_tanks_count"].__str__())
+		# self.labelHard.setText(  "     " + info["heavy_tanks_count"].__str__())
+		# self.labelFast.setText(  "     " + info["fast_tanks_count"].__str__())
+		# self.labelHealth.setText("Lives: " + info["count_of_available_player_tanks"].__str__())
 		
 
 		

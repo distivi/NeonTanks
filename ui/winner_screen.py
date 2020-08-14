@@ -3,8 +3,8 @@
 
 import sys
 import cocos
-from base_screen import BaseScreen
-from battle_screen import *
+from ui.base_screen import BaseScreen
+from ui.battle_screen import *
 from ui.main_menu import *
 
 class WinnerScreen(BaseScreen):
